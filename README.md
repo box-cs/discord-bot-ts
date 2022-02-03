@@ -33,9 +33,9 @@ Simple discord JS bot that has onMessageCreate commands and slash commands.
 
 ```javascript
 class EventCommands {
-	//Handing onMessageCreate events
+	//Handling onMessageCreate events
 	onMessageCreate = (msg) => {
-		//if else chain for commands
+		//if else-chain for commands
 		if (msg.content === "!<command>") {
 			msg.reply(/*reply to caller*/);
 		} else if (msg.content === "!<command2>") {
