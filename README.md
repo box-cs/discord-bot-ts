@@ -1,15 +1,19 @@
 # Discord JS Bot
 
 Simple discord JS bot that has onMessageCreate commands and slash commands.
+
 ## Features
+
 - Faceit API Calls (Elo graph, Elo)
 - Apex API Calls (current map, current item rotation)
 - Features an easy way to set up listener events
 
 ### Installation
+
 -Set up config.json like this
 
 ### config.json
+
 ```JSON
 {
 	"token": "your_token",
@@ -24,27 +28,26 @@ Simple discord JS bot that has onMessageCreate commands and slash commands.
 }
 
 ```
+
 -Make a folder called eventCommands in root of project, and a file as "eventCommands.js" in it
 with this code:
 
 ```javascript
 class EventCommands {
-  onMessageCreate = (msg) => {    
-   //handle message creation events
-  }
+	onMessageCreate = (msg) => {
+		//handle message creation events
+	};
 }
 
 module.exports = EventCommands;
-
 ```
 
 ```bash
 npm install
 ```
 
+### Windows
 
-
-### Windows 
 ```batch
 ::Delays for 15s to allow wifi to connect
 timeout /T 15
@@ -53,7 +56,9 @@ cd <path-to-bot>
 node "deploy-commands.js"
 node "bot.js"
 ```
+
 ### Bash
+
 ```Bash
 cd <path-to-bot>
 node deploy-commands.js

@@ -17,5 +17,8 @@
     "discord-api-types": "^0.26.1",
     "discord.js": "^13.6.0",
     "node-fetch": "^3.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.5.1"
   }
 }
