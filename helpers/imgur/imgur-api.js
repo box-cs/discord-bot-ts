@@ -4,9 +4,9 @@ const { IMGUR_ID, IMGUR_SECRET } = require("../../config.json");
 /**
  *Returns 100 images from subreddit gallery as promise
  *@param {string} subreddit - the subreddit imgur searches through
- *@param {string} sorting - the sorting method 
+ *@param {string} sorting - the sorting method
  *@param {string} time - the time range
- *@param {string} page - the page number
+ *@param {integer} page - the page number
  */
 const searchImgurSubreddit = async (subreddit, sorting, time, page) => {
   const query = `https://api.imgur.com/3/gallery/r/${subreddit}/${sorting}/${time}/${page}`;
@@ -23,9 +23,9 @@ const searchImgurSubreddit = async (subreddit, sorting, time, page) => {
 /**
  *Returns the actual images themselves
  *@param {string} subreddit - the subreddit imgur searches through
- *@param {string} sorting - the sorting method 
+ *@param {string} sorting - the sorting method
  *@param {string} time - the time range
- *@param {string} page - the page number
+ *@param {integer} page - the page number
  */
 const findImages = async (subreddit, sorting, time, page, numOfImages) => {
   res = await searchImgurSubreddit(subreddit, sorting, time, page);
