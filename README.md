@@ -13,7 +13,7 @@ Simple discord JS bot that has onMessageCreate commands and slash commands.
 ```JSON
 {
 	"token": "your_token",
-	"guildId": "your_channel's_id",
+	"guildId": ["your_channel's_id", "another_channel's_id"],
 	"clientId":"your_bot's_id",
 	"APEX_API_KEY":"visit https://api.mozambiquehe.re/",
 	"FACEIT_API_KEY":"visit https://developers.faceit.com/",
