@@ -51,9 +51,4 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-const guild = client.guilds.cache.get("<guild id>");
-
-// This takes ~1 hour to update
-client.commands.set([]);
-
 client.login(token);
