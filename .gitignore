@@ -1,0 +1,15 @@
+#contains tokens/secrets
+config.json
+#test file that I write junk js code on to port into a command
+test.js
+#/graph saves images here
+img/*
+#bash/batch script to run bot
+*.sh
+*.js.bat
+#would be nice if this worked
+/node_modules
+/node_modules/**
+#personal commands
+/eventCommands/**
+/eventCommands
