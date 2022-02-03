@@ -29,13 +29,22 @@ Simple discord JS bot that has onMessageCreate commands and slash commands.
 
 ```
 
--Make a folder called eventCommands in root of project, and a file as "eventCommands.js" in it
-with this code:
+-Make a folder called eventCommands in root of project, and a file as "eventCommands.js".
 
 ```javascript
 class EventCommands {
+	//Handing onMessageCreate events
 	onMessageCreate = (msg) => {
-		//handle message creation events
+		//if else chain for commands
+		if (msg.content === "!<command>") {
+			msg.reply(/*reply to caller*/);
+		} else if (msg.content === "!<command2>") {
+			msg.reply(/*reply to caller*/);
+		}
+		//message content parser
+		else if (msg.content.toLowerCase().includes("<keyword to look through>")) {
+			msg.reply(/*reply to caller*/);
+		}
 	};
 }
 
