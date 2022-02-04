@@ -32,10 +32,14 @@ client.on("messageCreate", async (msg) => {
     listen.onMessageCreate(msg);
 });
 
+client.on("interactionCreate", async (interaction) => {
+    if (!interaction.isButton()) return;
+      listen.onInteractionCreateButton(interaction);
+});
+
 //reads commands from commands folder, if the command does not exist, throw error
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isCommand()) return;
-
   const command = client.commands.get(interaction.commandName);
 
   if (!command) return;
