@@ -49,7 +49,7 @@ class EventCommands {
 	}
 	//Handling ButtonEvents
 	onInteractionCreateButton = (interaction, client) => {
-		//example to fetch user
+	  //example to fetch user
 	  const user = client.users.cache.get(interaction.user.id);
 	  //and DM text
 	  user.send(/*stuff*/);
