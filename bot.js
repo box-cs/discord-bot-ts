@@ -32,27 +32,28 @@ client.on("messageCreate", async (msg) => {
     listen.onMessageCreate(msg);
 });
 
+//handles onInteractionCreate events for commands an button events
 client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isButton()) return;
-      listen.onInteractionCreateButton(interaction);
-});
+  if (interaction.isCommand()){
+    const command = client.commands.get(interaction.commandName);
 
-//reads commands from commands folder, if the command does not exist, throw error
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isCommand()) return;
-  const command = client.commands.get(interaction.commandName);
+    if (!command) return;
 
-  if (!command) return;
-
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: "There was an error while executing this command!",
-      ephemeral: true,
-    });
+    try {
+      await command.execute(interaction);
+    } catch (error) {
+      console.error(error);
+      await interaction.reply({
+        content: "There was an error while executing this command!",
+        ephemeral: true,
+      });
+    }
   }
+  else if (interaction.isButton()){
+    listen.onInteractionCreateButton(interaction, client);
+  }
+  else return;
+
 });
 
 client.login(token);

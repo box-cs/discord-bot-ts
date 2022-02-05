@@ -3,10 +3,11 @@
 Simple discord JS bot that has onMessageCreate commands and slash commands.
 
 ## Features
-
-- Faceit API Calls (Elo graph, Elo)
+- Features an easy way to set up commands (Slash commands, listener events through onMessageCreate)
 - Apex API Calls (current map, current item rotation)
-- Features an easy way to set up listener events
+- Faceit API Calls (Elo graph, Elo)
+
+
 
 ### Installation
 
@@ -35,7 +36,7 @@ Simple discord JS bot that has onMessageCreate commands and slash commands.
 class EventCommands {
 	//Handling onMessageCreate events
 	onMessageCreate = (msg) => {
-		//if else-chain for commands
+		//if-else chain for commands
 		if (msg.content === "!<command>") {
 			msg.reply(/*reply to caller*/);
 		} else if (msg.content === "!<command2>") {
@@ -45,7 +46,16 @@ class EventCommands {
 		else if (msg.content.toLowerCase().includes("<keyword to look through>")) {
 			msg.reply(/*reply to caller*/);
 		}
-	};
+	}
+	//Handling ButtonEvents
+	onInteractionCreateButton = (interaction, client) => {
+		//example to fetch user
+	  const user = client.users.cache.get(interaction.user.id);
+	  //and DM text
+	  user.send(/*stuff*/);
+	  //or reply to interaction
+	  interaction.reply(/*stuff*/);
+	}
 }
 
 module.exports = EventCommands;
@@ -80,8 +90,9 @@ node ./bot.js
 Description=<yourbotname> discord bot
 
 [Service]
+# delay service start until PC is connected to wifi/ethernet
 # alternatively, use network-online.target
-ExecStartPre=/bin/sleep 15
+# ExecStartPre=/bin/sleep 15
 User=<yourusername>
 WorkingDirectory=<path/to/code>
 Type=forking
