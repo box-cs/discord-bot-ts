@@ -4,6 +4,7 @@ Simple discord JS bot that has onMessageCreate commands and slash commands.
 
 ## Features
 - Features an easy way to set up commands (Slash commands, listener events through onMessageCreate)
+- Imgur API Calls (subreddit gallery images)
 - Apex API Calls (current map, current item rotation)
 - Faceit API Calls (Elo graph, Elo)
 
