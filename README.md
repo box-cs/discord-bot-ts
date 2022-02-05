@@ -66,10 +66,30 @@ node "deploy-commands.js"
 node "bot.js"
 ```
 
-### Bash
+### Bash (bot.sh)
 
 ```Bash
-cd <path-to-bot>
-node deploy-commands.js
-node bot.js
+#!/usr/bin/bash
+node ./deploy-commands.js &
+node ./bot.js
+```
+
+### Running as a service on Linux (change what's inside angled brackets, remove angled brackets)
+```
+[Unit]
+Description=<yourbotname> discord bot
+
+[Service]
+# alternatively, use network-online.target
+ExecStartPre=/bin/sleep 15
+User=<yourusername>
+WorkingDirectory=<path/to/code>
+Type=forking
+ExecStart=<path/to/code>/bot.sh
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=default.target
+
 ```
