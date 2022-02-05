@@ -32,7 +32,7 @@ client.on("messageCreate", async (msg) => {
     listen.onMessageCreate(msg);
 });
 
-//handles onInteractionCreate events for commands an button events
+//handles onInteractionCreate events for commands and button events
 client.on("interactionCreate", async (interaction) => {
   if (interaction.isCommand()){
     const command = client.commands.get(interaction.commandName);
