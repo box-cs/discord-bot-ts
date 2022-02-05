@@ -4,10 +4,8 @@ config.json
 test.js
 #/graph saves images here
 img/*
-#bash/batch script to run bot
 *.sh
-*.js.bat
-#would be nice if this worked
+*.bat
 /node_modules
 /node_modules/**
 #personal commands
