@@ -25,6 +25,7 @@ module.exports = {
 		),
 
 	async execute(interaction) {
+		await interaction.deferReply();
 		const username = interaction.options.getString("username");
 		const linecolor = interaction.options.getString("linecolor");
 		const graphcolor = interaction.options.getString("graphcolor");
@@ -122,9 +123,9 @@ module.exports = {
 					url: `https://www.faceit.com/en/players/${username}`,
 				});
 
-			await interaction.reply({ embeds: [messageEmbed], files: [file] });
+			await interaction.editReply({ embeds: [messageEmbed], files: [file] });
 		} catch (err) {
-			await interaction.reply("Player not found?");
+			await interaction.editReply("Player not found?");
 		}
 	},
 };

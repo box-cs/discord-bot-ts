@@ -9,7 +9,8 @@ module.exports = {
 		),
 
 	async execute(interaction) {
+		await interaction.deferReply();
 		const string = interaction.options.getString("input");
-		await interaction.reply(string);
+		await interaction.editReply(string);
 	},
 };

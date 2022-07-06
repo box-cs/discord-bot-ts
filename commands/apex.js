@@ -17,6 +17,7 @@ module.exports = {
 		),
 
 	async execute(interaction) {
+		await interaction.deferReply();
 		const userOption = interaction.options.getString("command");
 		const choice = userOption[1];
 		const path = `https://api.mozambiquehe.re/${userOption}${APEX_API_KEY}`;
@@ -63,10 +64,10 @@ module.exports = {
 				.setImage(map_image[currentMap])
 				.setTimestamp();
 
-			await interaction.reply({ embeds: [messageEmbed] });
+			await interaction.editReply({ embeds: [messageEmbed] });
 		} catch (err) {
 			console.log(err);
-			await interaction.reply("Some error occurred. ):");
+			await interaction.editReply("Some error occurred. ):");
 		}
 	},
 };

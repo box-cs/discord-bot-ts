@@ -37,6 +37,7 @@ module.exports = {
 
 	async execute(interaction) {
 		//get user's selections
+		await interaction.deferReply();
 		const subreddit = interaction.options.getString("subreddit");
 		var sorting = interaction.options.getString("sorting");
 		var time = interaction.options.getString("time");
@@ -69,9 +70,9 @@ module.exports = {
 			//loop through response, find append image link to message string
 			res.forEach((image) => (message += `${image.link}\n`));
 
-			await interaction.reply(`${message}`);
+			await interaction.editReply(`${message}`);
 		} catch (err) {
-			await interaction.reply("There was some kind of error. :c");
+			await interaction.editReply("There was some kind of error. :c");
 		}
 	},
 };

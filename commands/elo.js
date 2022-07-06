@@ -15,6 +15,7 @@ module.exports = {
 		),
 
 	async execute(interaction) {
+		await interaction.deferReply();
 		const username = interaction.options.getString("username");
 		try {
 			let res = await faceit.searchPlayer(username);
@@ -40,9 +41,9 @@ module.exports = {
 				.setDescription(embedMessage)
 				.setThumbnail(playerData.avatar);
 
-			await interaction.reply({ embeds: [messageEmbed] });
+			await interaction.editReply({ embeds: [messageEmbed] });
 		} catch (err) {
-			await interaction.reply("Player not found?");
+			await interaction.editReply("Player not found?");
 		}
 	},
 };
