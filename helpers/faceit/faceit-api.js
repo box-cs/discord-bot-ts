@@ -39,9 +39,9 @@ const searchPlayerStats = async (username) => {
  *returns last 2000 matches and their data
  *@param {string} username
  */
-const getMatchHistory = async (username) => {
+const getMatchHistory = async (username, numberOfGames) => {
 	const res = await searchPlayer(username);
-	const query = `https://api.faceit.com/stats/api/v1/stats/time/users/${res.data.player_id.toString()}/games/csgo?size=2000`;
+	const query = `https://api.faceit.com/stats/api/v1/stats/time/users/${res.data.player_id.toString()}/games/csgo?size=${ numberOfGames || 2000}`;
 
 	return axios.get(query);
 };
