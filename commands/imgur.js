@@ -15,18 +15,22 @@ module.exports = {
 			option
 				.setName("sorting")
 				.setDescription("Sort by?")
-				.addChoice("Time", "time")
-				.addChoice("Top", "top")
+				.addChoices(
+					{ name: 'Time', value: 'time' },
+					{ name: 'Top', value: 'top' },
+				)
 		)
 		.addStringOption((option) =>
 			option
 				.setName("time")
 				.setDescription("Time Range?")
-				.addChoice("day", "day")
-				.addChoice("week", "week")
-				.addChoice("month", "month")
-				.addChoice("year", "year")
-				.addChoice("all", "all")
+				.addChoices(
+					{ name: 'day', value: 'day' },
+					{ name: 'week', value: 'week' },
+					{ name: 'month', value: 'month' },
+					{ name: 'year', value: 'year' },
+					{ name: 'all', value: 'all' },
+				)
 		)
 		.addIntegerOption((option) =>
 			option.setName("images").setDescription("Enter a number")
@@ -36,8 +40,8 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-		//get user's selections
 		await interaction.deferReply();
+		//get user's selections
 		const subreddit = interaction.options.getString("subreddit");
 		var sorting = interaction.options.getString("sorting");
 		var time = interaction.options.getString("time");
