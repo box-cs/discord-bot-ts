@@ -2,7 +2,6 @@
 config.json
 #test file that I write junk js code on to port into a command
 test.js
-#/graph saves images here
 img/*
 *.sh
 *.bat
