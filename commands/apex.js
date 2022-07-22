@@ -1,7 +1,6 @@
 const { APEX_API_KEY } = require("../config.json");
 const axios = require("axios");
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder, SlashCommandBuilder  } = require("discord.js");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,8 +11,10 @@ module.exports = {
 				.setName("command")
 				.setDescription("Enter a string")
 				.setRequired(true)
-				.addChoice("Map Rotation", "/maprotation?version=2&auth=")
-				.addChoice("Crafting Item Rotation", "/crafting?&auth=")
+				.addChoices(
+					{ name: 'Map Rotation', value: '/maprotation?version=2&auth=' },
+					{ name: 'Crafting Item Rotation', value: '/crafting?&auth=' },
+				)
 		),
 
 	async execute(interaction) {
@@ -57,7 +58,7 @@ module.exports = {
 				embedMessage = `\`\`\`ansi\n${uniqueItems.join("\n")}\`\`\``; //make string from unique set of elements
 			}
 
-			const messageEmbed = new MessageEmbed()
+			const messageEmbed = new EmbedBuilder()
 				.setColor("#d2c40f")
 				.setURL("https://apexlegendsapi.com")
 				.setDescription(embedMessage)
@@ -66,8 +67,7 @@ module.exports = {
 
 			await interaction.editReply({ embeds: [messageEmbed] });
 		} catch (err) {
-			console.log(err);
-			await interaction.editReply("Some error occurred. ):");
+			await interaction.editReply("Some error occurred.");
 		}
 	},
 };
