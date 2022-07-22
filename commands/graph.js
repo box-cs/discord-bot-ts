@@ -1,7 +1,6 @@
-const { FACEIT_API_KEY } = require("../config.json");
 const faceit = require("../helpers/faceit/faceit-api");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageAttachment, MessageEmbed } = require("discord.js");
+const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
 const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
 var fs = require("fs");
 
@@ -110,12 +109,11 @@ module.exports = {
 			};
 			//Save chart to local folder
 			const image = await chartJSNodeCanvas.renderToBuffer(configuration);
-			fs.writeFile("./img/graph.png", image, "buffer", function (err) {});
-			const file = new MessageAttachment("./img/graph.png");
+			const attachment = new AttachmentBuilder(image, { name: `graph.png` });
 
-			const messageEmbed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor("#ff5500")
-				.setImage("attachment://graph.png")
+				.setImage(`attachment://graph.png`)
 				.setAuthor({
 					name: `${username}'s elo graph`,
 					iconURL:
@@ -123,7 +121,7 @@ module.exports = {
 					url: `https://www.faceit.com/en/players/${username}`,
 				});
 
-			await interaction.editReply({ embeds: [messageEmbed], files: [file] });
+			await interaction.editReply({ embeds: [embed], files: [attachment] });
 		} catch (err) {
 			await interaction.editReply("Player not found?");
 		}
