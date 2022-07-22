@@ -4,9 +4,7 @@ const { Routes } = require("discord-api-types/v9");
 const { clientId, guildIds, token } = require("./config.json");
 
 const commands = [];
-const commandFiles = fs
-  .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
@@ -16,9 +14,11 @@ for (const file of commandFiles) {
 const rest = new REST({ version: "9" }).setToken(token);
 
 //register commands to multiple guilds if needed
-guildIds.forEach((guildId) => {
-  rest
-    .put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-    .then(() => console.log("Successfully registered application commands."))
-    .catch(console.error);
-});
+(async () => {
+  guildIds.forEach((guildId) => {
+    rest
+      .put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+      .then(() => console.log("Successfully registered application commands."))
+      .catch(console.error);
+  });
+})();
