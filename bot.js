@@ -1,9 +1,14 @@
 const fs = require("fs");
-const { Client, Collection, Intents } = require("discord.js");
+const { Client, Collection, GatewayIntentBits, InteractionType } = require("discord.js");
 const { token } = require("./config.json");
 const EventCommands = require("./eventCommands/eventCommands");
+
 const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ],
 });
 
 client.commands = new Collection();
@@ -34,26 +39,25 @@ client.on("messageCreate", async (msg) => {
 
 //handles onInteractionCreate events for commands and button events
 client.on("interactionCreate", async (interaction) => {
-  if (interaction.isCommand()){
+  if (interaction.type === InteractionType.ApplicationCommand) {
     const command = client.commands.get(interaction.commandName);
 
     if (!command) return;
 
     try {
       await command.execute(interaction);
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
+    } catch (err) {
+      await interaction.editReply({
         content: "There was an error while executing this command!",
         ephemeral: true,
       });
     }
   }
-  else if (interaction.isButton()){
+  /*else if (interaction.type == InteractionType.MessageComponent) {
+    Switch on the component type -> target specific component interactions, ie: a button
     listen.onInteractionCreateButton(interaction, client);
-  }
+  }*/
   else return;
-
 });
 
 client.login(token);
