@@ -18,8 +18,7 @@
     "chartjs-node-canvas": "^4.1.6",
     "discord-api-types": "^0.36.3",
     "discord.js": "^14.0.4-dev.1658491502-74ec7be.0",
-    "libsodium-wrappers": "^0.7.10",
-    "node-fetch": "^3.2.0"
+    "libsodium-wrappers": "^0.7.10"
   },
   "devDependencies": {
     "prettier": "^2.5.1"
