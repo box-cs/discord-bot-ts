@@ -27,14 +27,16 @@ client.once("ready", () => {
   console.log(`Ready! Logged in as ${client.user.tag}`);
 });
 
-const listen = new EventCommands();
 
 //messageCreate events are handled like this so I can split my messageCreate commands
 //into another folder and not share it on github
 client.on("messageCreate", async (msg) => {
-  if (!msg.author.bot)
-    //if the message author is not a bot
-    listen.onMessageCreate(msg);
+  try {
+    if (!msg.author.bot)
+      EventCommands.onMessageCreate(msg);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 //handles onInteractionCreate events for commands and button events
