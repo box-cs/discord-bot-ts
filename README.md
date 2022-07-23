@@ -36,7 +36,7 @@ Simple discord JS bot that has onMessageCreate commands and slash commands.
 ```javascript
 class EventCommands {
 	//Handling onMessageCreate events
-	onMessageCreate = (msg) => {
+	static onMessageCreate = (msg) => {
 		//if-else chain for commands
 		if (msg.content === "!<command>") {
 			msg.reply(/*reply to caller*/);
@@ -49,7 +49,7 @@ class EventCommands {
 		}
 	}
 	//Handling ButtonEvents
-	onInteractionCreateButton = (interaction, client) => {
+	static onInteractionCreateButton = (interaction, client) => {
 	  //example to fetch user
 	  const user = client.users.cache.get(interaction.user.id);
 	  //and DM text
