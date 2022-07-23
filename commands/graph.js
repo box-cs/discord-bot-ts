@@ -117,7 +117,7 @@ module.exports = {
 				.setAuthor({
 					name: `${username}'s elo graph`,
 					iconURL:
-						"https://assets.faceit-cdn.net/organizer_avatar/faceit_1551450699251.jpg",
+						"https://corporate.faceit.com/wp-content/themes/app-theme/assets/o/images/ico/ms-tile-image.png",
 					url: `https://www.faceit.com/en/players/${username}`,
 				});
 
