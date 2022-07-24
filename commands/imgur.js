@@ -1,5 +1,5 @@
 var { SlashCommandBuilder } = require("@discordjs/builders");
-var imgur = require("../helpers/imgur/imgur-api");
+var imgur = require("../api/imgur/imgur-api");
 
 module.exports = {
 	data: new SlashCommandBuilder()

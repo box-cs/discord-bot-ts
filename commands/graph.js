@@ -1,4 +1,4 @@
-const faceit = require("../helpers/faceit/faceit-api");
+const faceit = require("../api/faceit/faceit-api");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
 const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
