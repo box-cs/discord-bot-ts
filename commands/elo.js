@@ -20,7 +20,7 @@ module.exports = {
       let res = await faceit.searchPlayer(username);
       const player = {
         name: res.data.nickname.toString(),
-        avatar: res.data.avatar.toString(),
+        avatar: res.data.avatar.toString() || "https://cdn-frontend.faceit-cdn.net/web/static/media/profile_header.5eceb5a7.jpg",
         csgo: {
           level: res.data.games.csgo.skill_level.toString(),
           elo: res.data.games.csgo.faceit_elo.toString(),
@@ -45,11 +45,11 @@ module.exports = {
           url: `https://www.faceit.com/en/players/${player.name}`,
         })
         .addFields(
-          { name: "Elo", value: player.csgo.elo, inline: true },
-          { name: "Recent Results", value: recentResults, inline: true },
+          { name: "Elo", value: player.csgo.elo, inline: false },
+          { name: "Recent Results", value: recentResults, inline: false },
         )
         .setThumbnail(player.avatar)
-        .setTimestamp();;
+        .setTimestamp();
 
       await interaction.editReply({ embeds: [messageEmbed] });
     } catch (err) {
