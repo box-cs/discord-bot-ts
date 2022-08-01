@@ -20,7 +20,7 @@ module.exports = {
       let res = await faceit.searchPlayer(username);
       const player = {
         name: res.data.nickname.toString(),
-        avatar: res.data.avatar.toString() || "https://cdn-frontend.faceit-cdn.net/web/static/media/profile_header.5eceb5a7.jpg",
+        avatar: res.data.avatar.toString() || null,
         csgo: {
           level: res.data.games.csgo.skill_level.toString(),
           elo: res.data.games.csgo.faceit_elo.toString(),
