@@ -10,8 +10,7 @@ module.exports = {
 
 	async execute(interaction) {
 		await interaction.deferReply();
-		const string = interaction.options.getString("input");
-		await interaction.editReply(string);
+		await interaction.editReply(interaction.options.getString("input"));
 	},
 };
 export { };
