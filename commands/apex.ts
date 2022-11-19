@@ -13,16 +13,15 @@ module.exports = {
         .setDescription("Enter a string")
         .setRequired(true)
         .addChoices(
-          { name: 'Map Rotation', value: '/maprotation?version=2&auth=' },
-          { name: 'Crafting Item Rotation', value: '/crafting?&auth=' },
+          { name: 'Map Rotation', value: 'Map' },
+          { name: 'Crafting Item Rotation', value: 'Crafting' },
         )
     ),
 
   async execute(interaction: any) {
     await interaction.deferReply();
-    const userOption = interaction.options.getString("command");
-    const choice = userOption[1];
-    const path = `https://api.mozambiquehe.re/${userOption}${APEX_API_KEY}`;
+    const choice = interaction.options.getString("command");
+    const path = `https://api.mozambiquehe.re/${choice == "Map" ? "/maprotation?version=2&auth=" : '/crafting?&auth='}${APEX_API_KEY}`;
     const map_image: { [key: string]: string; } = {
       "World's Edge":
         "https://static.wikia.nocookie.net/apexlegends_gamepedia_en/images/9/91/Loadingscreen_World%27s_Edge_MU3.png/revision/latest/scale-to-width-down/240?cb=20210804105812",
@@ -33,43 +32,40 @@ module.exports = {
       "King's Canyon":
         "https://static.wikia.nocookie.net/apexlegends_gamepedia_en/images/c/cf/Loadingscreen_Kings_Canyon_MU3.png/revision/latest/scale-to-width-down/240?cb=20210202220042",
     };
+
     try {
-      let res = await axios.get(path);
-      var currentMap: string = "";
-      if (choice === "m") {
-        //if the user's choice is map rotation
-        var title = "Apex Legends Map Rotation";
-        currentMap = res.data.battle_royale.current.map;
-        const timeRemaining = res.data.battle_royale.current.remainingTimer;
-        var embedMessage = `\`\`\`ansi\n\u001b[1;37m${title}\n\u001b[0;34mCurrent Map: \u001b[0;36m${currentMap}\n\u001b[0;34mTime Remaining: \u001b[0;36m${timeRemaining}\`\`\``;
-      } else {
-        //if the user's choice is crafting rotation
-        var title = "Apex Legends Crafting Rotation";
-        let nonUniqueItems: Array<string> = [];
-        res.data.map((i: any) => {
-          //iterate for every bundle in the rotation
-          i.bundleContent.map((i2: any) => {
-            //for every item in the bundle
-            nonUniqueItems.push(
-              `\u001b[0;36m${i2.itemType.name.replaceAll("_", " ")}`
-            ); //push to array and replace undescores with spaces
-          });
-        });
-        let uniqueItems = [...new Set(nonUniqueItems)]; //create an unique set of elements
-        embedMessage = `\`\`\`ansi\n${uniqueItems.join("\n")}\`\`\``; //make string from unique set of elements
-      }
+      const res = await axios.get(path);
+      const { map, embedMessage } = handleChoice(choice, res?.data);
 
       const messageEmbed = new EmbedBuilder()
         .setColor("#d2c40f")
         .setURL("https://apexlegendsapi.com")
         .setDescription(embedMessage)
-        .setImage(map_image[currentMap])
+        .setImage(map ? map_image[map] : null)
         .setTimestamp();
 
       await interaction.editReply({ embeds: [messageEmbed] });
     } catch (err) {
-      await interaction.editReply("Some error occurred.");
+      await interaction.editReply("Some error occurred ):");
     }
   },
 };
+
+const handleChoice = (choice: string, data: any): { map: string, embedMessage: string } => {
+  if (choice === "Map") {
+    const { map, remainingTimer } = data.battle_royale.current;
+    return { map, embedMessage: `\`\`\`ansi\n\u001b[1;37mApex Legends Map Rotation\n\u001b[0;34mCurrent Map: \u001b[0;36m${map}\n\u001b[0;34mTime Remaining: \u001b[0;36m${remainingTimer}\`\`\`` };
+  }
+
+  let nonUniqueItems: Array<string> = [];
+  data.map((i: any) => {
+    i.bundleContent.map((i2: any) => {
+      nonUniqueItems.push(`\u001b[0;36m${i2.itemType.name.replaceAll("_", " ")}`);
+    });
+  });
+  // create an unique set of crafting items
+  let uniqueItems = [...new Set(nonUniqueItems)];
+  return { map: "", embedMessage: `\`\`\`ansi\n${uniqueItems.join("\n")}\`\`\`` };
+};
+
 export { };
