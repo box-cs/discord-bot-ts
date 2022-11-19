@@ -1,12 +1,11 @@
 const { FACEIT_API_KEY } = require("../../config.json");
-const axios = require("axios");
-
+import axios from "axios";
 /**
  *Queries faceit api for a player
  *returns player data, and other junk from faceit
  *@param {string} username
  */
-const searchPlayer = async (username) => {
+const searchPlayer = async (username: string) => {
 	const query = `https://open.faceit.com/data/v4/players?nickname=${username}&game=csgo`;
 
 	const options = {
@@ -21,7 +20,7 @@ const searchPlayer = async (username) => {
  * Queries faceit and returns player's all-time stats in csgo
  * @param {string} username
  */
-const searchPlayerStats = async (username) => {
+const searchPlayerStats = async (username: string) => {
 	const res = await searchPlayer(username);
 	const query = `https://open.faceit.com/data/v4/players/${res.data.player_id.toString()}/stats/csgo`;
 
@@ -39,9 +38,9 @@ const searchPlayerStats = async (username) => {
  *returns last 2000 matches and their data
  *@param {string} username
  */
-const getMatchHistory = async (username, numberOfGames) => {
+const getMatchHistory = async (username: string, numberOfGames: number) => {
 	const res = await searchPlayer(username);
-	const query = `https://api.faceit.com/stats/api/v1/stats/time/users/${res.data.player_id.toString()}/games/csgo?size=${ numberOfGames || 2000}`;
+	const query = `https://api.faceit.com/stats/api/v1/stats/time/users/${res.data.player_id.toString()}/games/csgo?size=${numberOfGames || 2000}`;
 
 	return axios.get(query);
 };
