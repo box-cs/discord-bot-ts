@@ -3,8 +3,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, Interaction, InteractionType } = require("discord.js");
 const { token } = require("./config.json");
-const Events = require("./eventCommands/Events");
-const EventFactory = require("./eventCommands/EventFactory");
+const Events = require("./eventCommands/Events");             // Optional
+const EventFactory = require("./eventCommands/EventFactory"); // Optional             
 
 const client = new Client({
   intents: [
@@ -29,24 +29,24 @@ for (const file of commandFiles) {
   }
 }
 
-EventFactory.makeEvents();
+EventFactory.makeEvents(); // Optional
 client.once("ready", () => {
   console.log(`Ready! Logged in as ${client.user.tag}`);
 });
 
-//messageCreate events are handled like this so I can split my messageCreate commands
-//into another folder and not share it on github
+// messageCreate events are handled like this so I can split my messageCreate commands
+// into another folder and not share it on github
 client.on("messageCreate", async (msg) => {
   try {
     if (!msg.author.bot) {
-      Events.handleEvent(msg);
+      Events.handleEvent(msg); // Optional
     }
   } catch (err) {
     console.log(err);
   }
 });
 
-//handles onInteractionCreate events for commands and button events
+// handles onInteractionCreate events for commands and button events
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
@@ -57,7 +57,6 @@ client.on("interactionCreate", async (interaction) => {
   try {
     await command.execute(interaction);
   } catch (error) {
-    console.error(error);
     await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
   }
 });
