@@ -4,8 +4,8 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node deploy-commands.ts && ts-node bot.ts"
+    "start": "ts-node deploy-commands.ts && ts-node bot.ts",
+    "debug": "ts-node bot.ts"
   },
   "author": "",
   "license": "ISC",
