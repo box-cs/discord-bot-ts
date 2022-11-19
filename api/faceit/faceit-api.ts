@@ -3,7 +3,7 @@ import axios from "axios";
 /**
  * Gets FACEIT player data
  * @returns player data
- *@param {string} username
+ * @param {string} username
  */
 const searchPlayer = async (username: string) => {
   const query = `https://open.faceit.com/data/v4/players?nickname=${username}&game=csgo`;
