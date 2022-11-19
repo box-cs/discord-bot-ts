@@ -19,8 +19,8 @@ module.exports = {
     try {
       let res = await faceit.searchPlayer(username);
       const player = {
-        name: res.data.nickname.toString(),
-        avatar: res.data.avatar.toString() || null,
+        name: res.data.nickname,
+        avatar: res.data?.avatar,
         csgo: {
           level: res.data.games.csgo.skill_level.toString(),
           elo: res.data.games.csgo.faceit_elo.toString(),
@@ -34,13 +34,10 @@ module.exports = {
         .map((result: number) => (result == 1 ? "W" : "L"))
         .join(" ");
 
-      const emojiResponses = ["🌌", "⚡", "💀"];
-      const response = kd > 1.3 ? emojiResponses[0] : kd > 1.2 ? emojiResponses[1] : emojiResponses[2];
-
       const messageEmbed = new EmbedBuilder()
         .setColor("#ff5500")
         .setAuthor({
-          name: `${player.name} ${response}`,
+          name: `${player.name} ${emojifyKD(kd)}`,
           iconURL: `https://beta.leetify.com/assets/images/rank-icons/faceit${player.csgo.level}.png`,
           url: `https://www.faceit.com/en/players/${player.name}`,
         })
@@ -52,9 +49,21 @@ module.exports = {
         .setTimestamp();
       await interaction.editReply({ embeds: [messageEmbed] });
     } catch (err) {
-      console.log(err);
       await interaction.editReply("Player not found?");
     }
   },
 };
+
+const emojifyKD = (kd: number): string => {
+  const emojiResponses = ["🌌", "⚡", "💀"];
+  switch (true) {
+    case (kd > 1.3):
+      return emojiResponses[0];
+    case (kd > 1.2):
+      return emojiResponses[1];
+    default:
+      return emojiResponses[2];
+  }
+};
+
 export { };
