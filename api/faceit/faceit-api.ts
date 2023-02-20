@@ -1,4 +1,5 @@
 const { FACEIT_API_KEY } = require("../../config.json");
+import axios from "axios";
 
 /**
  * Authorization headers
@@ -9,8 +10,6 @@ const options = {
     Authorization: "Bearer " + FACEIT_API_KEY,
   },
 };
-
-import axios from "axios";
 /**
  * Gets FACEIT player data
  * @returns player data
@@ -52,14 +51,12 @@ const paginatedRequest = async (
   });
   return data;
 };
-
 /**
  * Gets FACEIT playerId for a player from username
  * @param {string} username
- * @param {number} numberOfGames number games to fetch (default of 2000)
- * @returns array of matches from now until `numberOfGames` before
+ * @returns array of matches
  */
-const getMatchHistory = async (username: string, numberOfGames: number) => {
+const getMatchHistory = async (username: string) => {
   const playerId = (await searchPlayer(username))?.data?.player_id;
   const query = `https://api.faceit.com/stats/api/v1/stats/time/users/${playerId}/games/csgo?size=100`;
 
