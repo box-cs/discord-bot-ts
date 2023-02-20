@@ -15,11 +15,7 @@
     "@discordjs/voice": "^0.11.0",
     "@types/node": "^18.11.9",
     "axios": "^0.27.2",
-<<<<<<< HEAD
     "canvas": "^2.11.0",
-=======
-    "canvas": "^2.10.2",
->>>>>>> accc7c4ac272eb13ebbce184cccfc29caad63e9c
     "chart.js": "^3.8.0",
     "chartjs-node-canvas": "^4.1.6",
     "discord-api-types": "^0.36.3",
