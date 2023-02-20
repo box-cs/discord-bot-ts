@@ -29,12 +29,12 @@ module.exports = {
     const graphcolor = interaction.options.getString("graphcolor");
 
     try {
-      let res = await faceit.getMatchHistory(username);
-
-      const elo_history = res.data
+      const matches = await faceit.getMatchHistory(username);
+      const elo_history = matches
         .map((match) => match.elo)
         .filter((elo) => elo !== undefined)
         .reverse();
+
       const count = elo_history.map((elo, index) => {
         return (index + 1).toString();
       });
@@ -65,7 +65,9 @@ module.exports = {
         ],
       };
 
-      const image = await chartJSNodeCanvas.renderToBuffer(CreateGraphConfig(data));
+      const image = await chartJSNodeCanvas.renderToBuffer(
+        CreateGraphConfig(data)
+      );
       const attachment = new AttachmentBuilder(image, { name: `graph.png` });
 
       const embed = new EmbedBuilder()
@@ -79,12 +81,12 @@ module.exports = {
         });
 
       await interaction.editReply({ embeds: [embed], files: [attachment] });
-    } catch (err) {
+    } catch (_) {
       await interaction.editReply("Player not found?");
     }
   },
 };
-export { };
+export {};
 
 const CreateGraphConfig = (data) => {
   return {

@@ -1,4 +1,15 @@
 const { FACEIT_API_KEY } = require("../../config.json");
+
+/**
+ * Authorization headers
+ */
+const options = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + FACEIT_API_KEY,
+  },
+};
+
 import axios from "axios";
 /**
  * Gets FACEIT player data
@@ -8,12 +19,6 @@ import axios from "axios";
 const searchPlayer = async (username: string) => {
   const query = `https://open.faceit.com/data/v4/players?nickname=${username}&game=csgo`;
 
-  const options = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + FACEIT_API_KEY,
-    },
-  };
   return axios.get(query, options);
 };
 /**
@@ -21,17 +26,33 @@ const searchPlayer = async (username: string) => {
  * @param {string} username
  */
 const searchPlayerStats = async (username: string) => {
-  const res = await searchPlayer(username);
-  const query = `https://open.faceit.com/data/v4/players/${res.data.player_id.toString()}/stats/csgo`;
+  const player_id = (await searchPlayer(username))?.data?.player_id;
+  const query = `https://open.faceit.com/data/v4/players/${player_id}/stats/csgo`;
 
-  const options = {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + FACEIT_API_KEY,
-    },
-  };
   return axios.get(query, options);
 };
+
+const paginatedRequest = async (
+  query: string,
+  playerId: string,
+  page: number,
+  data: number[] = []
+) => {
+  await axios.get(query).then((res) => {
+    data.push.apply(data, res?.data);
+
+    if (res?.data && res.data?.length != 0) {
+      return paginatedRequest(
+        `https://api.faceit.com/stats/api/v1/stats/time/users/${playerId}/games/csgo?size=100&page=${page}`,
+        playerId,
+        page + 1,
+        data
+      );
+    }
+  });
+  return data;
+};
+
 /**
  * Gets FACEIT playerId for a player from username
  * @param {string} username
@@ -39,10 +60,10 @@ const searchPlayerStats = async (username: string) => {
  * @returns array of matches from now until `numberOfGames` before
  */
 const getMatchHistory = async (username: string, numberOfGames: number) => {
-  const res = await searchPlayer(username);
-  const query = `https://api.faceit.com/stats/api/v1/stats/time/users/${res.data.player_id.toString()}/games/csgo?size=${numberOfGames || 2000}`;
+  const playerId = (await searchPlayer(username))?.data?.player_id;
+  const query = `https://api.faceit.com/stats/api/v1/stats/time/users/${playerId}/games/csgo?size=100`;
 
-  return axios.get(query);
+  return await paginatedRequest(query, playerId, 1);
 };
 
 module.exports = {
