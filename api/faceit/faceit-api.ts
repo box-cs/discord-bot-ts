@@ -11,13 +11,21 @@ const options = {
   },
 };
 /**
- * Gets FACEIT player data
+ * Gets FACEIT player data from username
  * @returns player data
  * @param {string} username
  */
 const searchPlayer = async (username: string) => {
   const query = `https://open.faceit.com/data/v4/players?nickname=${username}&game=csgo`;
-
+  return axios.get(query, options);
+};
+/**
+ * Gets FACEIT player data from steamID
+ * @returns player data
+ * @param {string} steamID
+ */
+const searchPlayerFromSteamID = async (steamID: string) => {
+  const query = `https://open.faceit.com/data/v4/players?game=csgo&game_player_id=${steamID}`;
   return axios.get(query, options);
 };
 /**
@@ -65,6 +73,7 @@ const getMatchHistory = async (username: string) => {
 
 module.exports = {
   searchPlayer,
+  searchPlayerFromSteamID,
   searchPlayerStats,
   getMatchHistory,
 };
