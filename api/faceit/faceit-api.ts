@@ -35,8 +35,17 @@ const searchPlayerFromSteamID = async (steamID: string) => {
 const searchPlayerStats = async (username: string) => {
   const player_id = (await searchPlayer(username))?.data?.player_id;
   const query = `https://open.faceit.com/data/v4/players/${player_id}/stats/csgo`;
-
   return axios.get(query, options);
+};
+/**
+ * Gets FACEIT match history from faceit username
+ * @param {string} username
+ * @returns array of matches
+ */
+const getMatchHistory = async (username: string) => {
+  const playerId = (await searchPlayer(username))?.data?.player_id;
+  const query = `https://api.faceit.com/stats/api/v1/stats/time/users/${playerId}/games/csgo?size=100`;
+  return await paginatedRequest(query, playerId, 1);
 };
 
 const paginatedRequest = async (
@@ -58,17 +67,6 @@ const paginatedRequest = async (
     }
   });
   return data;
-};
-/**
- * Gets FACEIT playerId for a player from username
- * @param {string} username
- * @returns array of matches
- */
-const getMatchHistory = async (username: string) => {
-  const playerId = (await searchPlayer(username))?.data?.player_id;
-  const query = `https://api.faceit.com/stats/api/v1/stats/time/users/${playerId}/games/csgo?size=100`;
-
-  return await paginatedRequest(query, playerId, 1);
 };
 
 module.exports = {

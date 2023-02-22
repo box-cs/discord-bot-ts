@@ -5,7 +5,10 @@ const getResolvedSteamID = async (vanityURL: string) => {
   const query = `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${STEAM_API_KEY}&vanityurl=${vanityURL}`;
   return axios.get(query);
 };
-
+/**
+ * @param url steamcommunity profile url
+ * @returns resolved steamID
+ */
 const resolveSteamID = async (url: string) => {
   // https://steamcommunity.com/profiles/{id64}/
   // https://steamcommunity.com/id/{vanityId}/
