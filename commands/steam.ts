@@ -1,30 +1,31 @@
 const faceit = require("../api/faceit/faceit-api");
-const helpers = require("../lib/helpers");
+const steam = require("../api/steam/steam-api");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const helpers = require("../lib/helpers");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("elo")
-    .setDescription("Fetches FACEIT Elo")
+    .setName("steam")
+    .setDescription("Fetches FACEIT profile from steam URL")
     .addStringOption((option) =>
       option
-        .setName("username")
-        .setDescription("Enter a faceit username")
+        .setName("url")
+        .setDescription("Enter a steam URL")
         .setRequired(true)
     ),
 
   async execute(interaction): Promise<void> {
     await interaction.deferReply();
-    const username = interaction.options.getString("username");
+    const url = interaction.options.getString("url");
     try {
-      const data = (await faceit.searchPlayer(username))?.data;
+      const steamId = await steam.resolveSteamID(url);
+      const data = (await faceit.searchPlayerFromSteamID(steamId))?.data;
       const player = helpers.extractPlayerData(data);
-      const playerStats = (await faceit.searchPlayerStats(username))?.data;
+      const playerStats = (await faceit.searchPlayerStats(player.name))?.data;
       const messageEmbed = helpers.buildEloEmbed(player, playerStats);
       await interaction.editReply({ embeds: [messageEmbed] });
     } catch (_) {
-      await interaction.editReply("Player not found?");
+      await interaction.editReply("No FACEIT account found.");
     }
   },
 };
