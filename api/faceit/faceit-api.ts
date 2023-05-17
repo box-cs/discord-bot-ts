@@ -1,19 +1,18 @@
 const { FACEIT_API_KEY } = require("../../config.json");
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 /**
  * Authorization headers
  */
-const options = {
+const options: AxiosRequestConfig<any> = {
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer " + FACEIT_API_KEY,
+    Authorization: `Bearer ${FACEIT_API_KEY}`,
   },
 };
 /**
  * Gets FACEIT player data from username
  * @returns player data
- * @param {string} username
  */
 const searchPlayer = async (username: string) => {
   const query = `https://open.faceit.com/data/v4/players?nickname=${username}&game=csgo`;
@@ -22,7 +21,6 @@ const searchPlayer = async (username: string) => {
 /**
  * Gets FACEIT player data from steamID
  * @returns player data
- * @param {string} steamID
  */
 const searchPlayerFromSteamID = async (steamID: string) => {
   const query = `https://open.faceit.com/data/v4/players?game=csgo&game_player_id=${steamID}`;
@@ -30,7 +28,6 @@ const searchPlayerFromSteamID = async (steamID: string) => {
 };
 /**
  * Gets FACEIT player all time stats
- * @param {string} username
  */
 const searchPlayerStats = async (username: string) => {
   const player_id = (await searchPlayer(username))?.data?.player_id;
@@ -39,7 +36,6 @@ const searchPlayerStats = async (username: string) => {
 };
 /**
  * Gets FACEIT match history from faceit username
- * @param {string} username
  * @returns array of matches
  */
 const getMatchHistory = async (username: string) => {
