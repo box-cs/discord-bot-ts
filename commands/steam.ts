@@ -1,3 +1,7 @@
+import {
+  ChatInputCommandInteraction,
+  SlashCommandStringOption,
+} from "discord.js";
 const faceit = require("../api/faceit/faceit-api");
 const steam = require("../api/steam/steam-api");
 const { SlashCommandBuilder } = require("@discordjs/builders");
@@ -7,14 +11,14 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("steam")
     .setDescription("Fetches FACEIT profile from steam URL")
-    .addStringOption((option) =>
+    .addStringOption((option: SlashCommandStringOption) =>
       option
         .setName("url")
         .setDescription("Enter a steam URL")
         .setRequired(true)
     ),
 
-  async execute(interaction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     await interaction.deferReply();
     const url = interaction.options.getString("url");
     try {
@@ -24,7 +28,7 @@ module.exports = {
       const playerStats = (await faceit.searchPlayerStats(player.name))?.data;
       const messageEmbed = helpers.buildEloEmbed(player, playerStats);
       await interaction.editReply({ embeds: [messageEmbed] });
-    } catch (_) {
+    } catch {
       await interaction.editReply("No FACEIT account found.");
     }
   },
