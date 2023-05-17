@@ -1,3 +1,8 @@
+import {
+  ChatInputCommandInteraction,
+  SlashCommandStringOption,
+} from "discord.js";
+
 const faceit = require("../api/faceit/faceit-api");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
@@ -7,22 +12,22 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("graph")
     .setDescription("Last 2000 Matches Graphed From FACEIT")
-    .addStringOption((option) =>
+    .addStringOption((option: SlashCommandStringOption) =>
       option
         .setName("username")
         .setDescription("Enter a faceit username")
         .setRequired(true)
     )
-    .addStringOption((option) =>
+    .addStringOption((option: SlashCommandStringOption) =>
       option.setName("linecolor").setDescription("Line Color (Hex)")
     )
-    .addStringOption((option) =>
+    .addStringOption((option: SlashCommandStringOption) =>
       option
         .setName("graphcolor")
         .setDescription("Graph Background Color (Hex)")
     ),
 
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
     const username = interaction.options.getString("username");
     const linecolor = interaction.options.getString("linecolor");
@@ -31,11 +36,11 @@ module.exports = {
     try {
       const matches = await faceit.getMatchHistory(username);
       const elo_history = matches
-        .map((match) => match.elo)
-        .filter((elo) => elo !== undefined)
+        .map((match: { elo: string }) => match.elo)
+        .filter((elo: string | undefined) => elo !== undefined)
         .reverse();
 
-      const count = elo_history.map((elo, index) => {
+      const count = elo_history.map((_: string, index: number) => {
         return (index + 1).toString();
       });
 
@@ -66,7 +71,7 @@ module.exports = {
       };
 
       const image = await chartJSNodeCanvas.renderToBuffer(
-        CreateGraphConfig(data)
+        MakeGraphConfig(data)
       );
       const attachment = new AttachmentBuilder(image, { name: `graph.png` });
 
@@ -81,14 +86,14 @@ module.exports = {
         });
 
       await interaction.editReply({ embeds: [embed], files: [attachment] });
-    } catch (_) {
+    } catch {
       await interaction.editReply("Player not found?");
     }
   },
 };
 export {};
 
-const CreateGraphConfig = (data) => {
+const MakeGraphConfig = (data: any) => {
   return {
     type: "line",
     data: data,
@@ -126,6 +131,6 @@ const CreateGraphConfig = (data) => {
       },
       layout: { padding: 30 },
     },
-    plugins: [],
+    plugins: [] as any[],
   };
 };
