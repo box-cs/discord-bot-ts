@@ -16,7 +16,7 @@
     "@types/node": "^20.2.0",
     "axios": "^1.4.0",
     "canvas": "^2.11.0",
-    "chart.js": "^4.3.0",
+    "chart.js": "^3.9.1",
     "chartjs-node-canvas": "^4.1.6",
     "discord-api-types": "^0.37.42",
     "discord.js": "^14.0.4-dev.1658491502-74ec7be.0",
