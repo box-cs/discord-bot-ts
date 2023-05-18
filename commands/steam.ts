@@ -1,10 +1,10 @@
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
+  SlashCommandBuilder,
 } from "discord.js";
 const faceit = require("../api/faceit/faceit-api");
 const steam = require("../api/steam/steam-api");
-const { SlashCommandBuilder } = require("@discordjs/builders");
 const helpers = require("../lib/helpers");
 
 module.exports = {

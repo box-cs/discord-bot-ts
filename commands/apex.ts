@@ -1,9 +1,10 @@
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
+  EmbedBuilder,
+  SlashCommandBuilder,
 } from "discord.js";
 const { APEX_API_KEY } = require("../config.json");
-const { EmbedBuilder, SlashCommandBuilder } = require("discord.js");
 const helpers = require("../lib/helpers");
 const axios = require("axios");
 
@@ -33,7 +34,7 @@ module.exports = {
       const res = await axios.get(path);
       const { map, embedMessage } = helpers.handleChoice(choice, res?.data);
 
-      const messageEmbed = new EmbedBuilder()
+      const messageEmbed: EmbedBuilder = new EmbedBuilder()
         .setColor("#d2c40f")
         .setURL("https://apexlegendsapi.com")
         .setDescription(embedMessage)

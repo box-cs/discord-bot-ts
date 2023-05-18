@@ -46,7 +46,7 @@ function extractPlayerData(data: Player & { games: any }) {
   };
 }
 
-function buildEloEmbed(
+function makeEloEmbed(
   player: Player & { name: string; csgo: any },
   playerStats: { lifetime: any }
 ) {
@@ -56,6 +56,7 @@ function buildEloEmbed(
     .join(" ");
 
   const eloImage = `https://beta.leetify.com/assets/images/rank-icons/faceit${player.csgo.level}.png`;
+  const timeStamp = Date.now().toString();
   const messageEmbed = new EmbedBuilder()
     .setColor("#ff5500")
     .setAuthor({
@@ -65,10 +66,14 @@ function buildEloEmbed(
     })
     .addFields(
       { name: "Elo", value: player?.csgo?.elo, inline: false },
-      { name: "Recent Results", value: recentResults, inline: false }
+      { name: "Recent Results", value: recentResults, inline: false },
+      {
+        name: " ",
+        value: `<t:${timeStamp.slice(0, timeStamp.length - 3)}:R>`,
+        inline: false,
+      }
     )
-    .setThumbnail(player?.avatar || eloImage)
-    .setTimestamp();
+    .setThumbnail(player?.avatar || eloImage);
 
   return messageEmbed;
 }
@@ -137,7 +142,7 @@ module.exports = {
   extractPlayerData,
   ExtractApexAPIData,
   handleChoice,
-  buildEloEmbed,
+  buildEloEmbed: makeEloEmbed,
   toTitleCase,
   ansiBlock,
   map_images,

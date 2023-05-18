@@ -1,11 +1,12 @@
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
+  SlashCommandBuilder,
+  AttachmentBuilder,
+  EmbedBuilder,
 } from "discord.js";
 
 const faceit = require("../api/faceit/faceit-api");
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
 const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
 
 module.exports = {

@@ -2,9 +2,9 @@ import {
   ChatInputCommandInteraction,
   SlashCommandIntegerOption,
   SlashCommandStringOption,
+  SlashCommandBuilder,
 } from "discord.js";
 
-var { SlashCommandBuilder } = require("@discordjs/builders");
 var imgur = require("../api/imgur/imgur-api");
 
 module.exports = {

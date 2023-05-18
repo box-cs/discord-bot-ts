@@ -1,9 +1,9 @@
 const faceit = require("../api/faceit/faceit-api");
 const helpers = require("../lib/helpers");
-const { SlashCommandBuilder } = require("@discordjs/builders");
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
+  SlashCommandBuilder,
 } from "discord.js";
 
 module.exports = {
