@@ -7,7 +7,13 @@ import {
 } from "discord.js";
 
 const faceit = require("../api/faceit/faceit-api");
-const { ChartJSNodeCanvas } = require("chartjs-node-canvas");
+import { ChartJSNodeCanvas } from "chartjs-node-canvas";
+import {
+  BubbleDataPoint,
+  ChartConfiguration,
+  ChartTypeRegistry,
+  ScatterDataPoint,
+} from "chart.js";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -94,7 +100,13 @@ module.exports = {
 };
 export {};
 
-const MakeGraphConfig = (data: any) => {
+function MakeGraphConfig(
+  data: any
+): ChartConfiguration<
+  keyof ChartTypeRegistry,
+  (number | ScatterDataPoint | BubbleDataPoint)[],
+  unknown
+> {
   return {
     type: "line",
     data: data,
@@ -105,7 +117,6 @@ const MakeGraphConfig = (data: any) => {
             font: {
               size: 20,
               weight: "bold",
-              color: "#FFFFFF",
             },
           },
         },
@@ -114,7 +125,6 @@ const MakeGraphConfig = (data: any) => {
             font: {
               size: 20,
               weight: "bold",
-              color: "#FFFFFF",
             },
           },
         },
@@ -125,7 +135,6 @@ const MakeGraphConfig = (data: any) => {
             font: {
               size: 25,
               weight: "bold",
-              color: "#FFFFFF",
             },
           },
         },
@@ -134,4 +143,4 @@ const MakeGraphConfig = (data: any) => {
     },
     plugins: [] as any[],
   };
-};
+}
