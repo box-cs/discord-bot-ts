@@ -4,9 +4,9 @@ import {
   EmbedBuilder,
   SlashCommandBuilder,
 } from "discord.js";
-const { APEX_API_KEY } = require("../config.json");
+import { APEX_API_KEY } from "../config.json";
 const helpers = require("../lib/helpers");
-const axios = require("axios");
+import axios from "axios";
 
 module.exports = {
   data: new SlashCommandBuilder()

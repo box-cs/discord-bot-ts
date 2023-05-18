@@ -2,10 +2,10 @@ import {
   RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder,
 } from "discord.js";
-const fs = require("fs");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const { clientId, guildIds, token } = require("./config.json");
+import fs from "fs";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import { clientId, guildIds, token } from "./config.json";
 
 const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
 const commandFiles: string[] = fs
