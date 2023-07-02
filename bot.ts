@@ -2,9 +2,9 @@ import { Interaction, Message } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
-import { token } from "./config.json";
 import { CommandHandler } from "./eventCommands/Events"; // Optional
 import { EventFactory } from "./eventCommands/EventFactory"; // Optional
+import { PrismaClient } from "@prisma/client";
 
 const client = new Client({
   intents: [
@@ -73,4 +73,7 @@ client.on("interactionCreate", async (interaction: Interaction) => {
   }
 });
 
-client.login(token);
+const prisma = new PrismaClient();
+prisma.$connect().then(async () => {
+  await client.login(process.env.DISCORD_TOKEN);
+});
