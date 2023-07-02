@@ -1,10 +1,10 @@
 import { Interaction, Message } from "discord.js";
-const fs = require("node:fs");
-const path = require("node:path");
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
-const { token } = require("./config.json");
-const Events = require("./eventCommands/Events"); // Optional
-const EventFactory = require("./eventCommands/EventFactory"); // Optional
+import fs from "node:fs";
+import path from "node:path";
+import { Client, Collection, GatewayIntentBits } from "discord.js";
+import { token } from "./config.json";
+import { CommandHandler } from "./eventCommands/Events"; // Optional
+import { EventFactory } from "./eventCommands/EventFactory"; // Optional
 
 const client = new Client({
   intents: [
@@ -14,6 +14,7 @@ const client = new Client({
   ],
 });
 
+// @ts-ignore
 client.commands = new Collection();
 const pathToCommands = path.join(__dirname, "commands");
 const commandFiles: string[] = fs
@@ -25,6 +26,7 @@ for (const file of commandFiles) {
   const command = require(filePath);
   // Set a new item in the Collection with the key as the command name and the value as the exported module
   if ("data" in command && "execute" in command) {
+    // @ts-ignore
     client.commands.set(command.data.name, command);
   } else {
     console.log(
@@ -43,7 +45,7 @@ client.once("ready", () => {
 client.on("messageCreate", async (msg: Message) => {
   try {
     if (!msg.author.bot) {
-      Events.handleEvent(msg); // Optional
+      CommandHandler.handleCommand(msg); // Optional
     }
   } catch (err) {
     console.log(err);
