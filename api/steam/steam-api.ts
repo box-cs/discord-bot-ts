@@ -1,4 +1,6 @@
-const { STEAM_API_KEY } = require("../../config.json");
+const { getEnvVar } = require("../../lib/helpers");
+const STEAM_API_KEY = getEnvVar("STEAM_API_KEY");
+
 import axios from "axios";
 
 const getResolvedSteamID = async (vanityURL: string) => {

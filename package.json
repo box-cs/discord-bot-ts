@@ -25,6 +25,8 @@
     "typescript": "^5.0.4"
   },
   "devDependencies": {
-    "prettier": "^2.5.1"
+    "dotenv": "^16.3.1",
+    "prettier": "^2.5.1",
+    "prisma": "^5.1.1"
   }
 }

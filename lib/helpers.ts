@@ -12,6 +12,18 @@ const map_images: { [key: string]: string } = {
     "https://static.wikia.nocookie.net/apexlegends_gamepedia_en/images/c/cf/Loadingscreen_Kings_Canyon_MU3.png/revision/latest/scale-to-width-down/240?cb=20210202220042",
 };
 
+function getEnvVar(envvar: string, defaultValue?: string): string | string[] {
+  const value = process.env[envvar];
+  if (!value && !defaultValue) {
+    throw new Error(`Missing environment variable: ${envvar}`);
+  }
+  const retVal = value || defaultValue;
+  if (retVal.includes(",")) {
+    return retVal.split(",");
+  }
+  return retVal;
+}
+
 function ansiBlock(str: string) {
   return `\`\`\`ansi\n${str}\`\`\``;
 }
@@ -78,7 +90,7 @@ function makeEloEmbed(
   return messageEmbed;
 }
 
-function ExtractApexAPIData(apexAPIData: ApexAPIData) {
+function extractApexAPIData(apexAPIData: ApexAPIData) {
   const { map: triosMap, remainingTimer: timeRemaining } =
     apexAPIData.battle_royale.current;
   const {
@@ -117,7 +129,7 @@ function handleChoice(
   data: ApexAPIData | any[]
 ): { map: string; embedMessage: string } {
   if (choice === "Map") {
-    return ExtractApexAPIData(data as ApexAPIData);
+    return extractApexAPIData(data as ApexAPIData);
   }
 
   const items: string[] = [];
@@ -140,7 +152,8 @@ function handleChoice(
 
 module.exports = {
   extractPlayerData,
-  ExtractApexAPIData,
+  getEnvVar,
+  extractApexAPIData,
   handleChoice,
   buildEloEmbed: makeEloEmbed,
   toTitleCase,

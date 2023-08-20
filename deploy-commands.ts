@@ -5,7 +5,11 @@ import {
 import fs from "fs";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import { clientId, guildIds, token } from "./config.json";
+const { getEnvVar } = require("./lib/helpers");
+
+const clientId = getEnvVar("CLIENT_ID");
+const guildIds = getEnvVar("GUILD_IDS");
+const token = getEnvVar("DISCORD_TOKEN");
 
 const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
 const commandFiles: string[] = fs

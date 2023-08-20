@@ -1,4 +1,5 @@
-const { IMGUR_ID } = require("../../config.json");
+const { getEnvVar } = require("../../lib/helpers");
+const IMGUR_ID = getEnvVar("IMGUR_ID");
 import axios, { AxiosRequestConfig } from "axios";
 /**
  * Returns 100 images from subreddit gallery as promise

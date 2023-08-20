@@ -1,4 +1,5 @@
-const { FACEIT_API_KEY } = require("../../config.json");
+const { getEnvVar } = require("../../lib/helpers");
+const FACEIT_API_KEY = getEnvVar("FACEIT_API_KEY");
 import axios, { AxiosRequestConfig } from "axios";
 
 /**

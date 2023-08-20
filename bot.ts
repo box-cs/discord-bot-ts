@@ -1,10 +1,11 @@
+require("dotenv").config();
 import { Interaction, Message } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
-import { token } from "./config.json";
 import { CommandHandler } from "./eventCommands/Events"; // Optional
 import { EventFactory } from "./eventCommands/EventFactory";
+const { getEnvVar } = require("./lib/helpers");
 
 const client = new Client({
   intents: [
@@ -71,4 +72,5 @@ client.on("interactionCreate", async (interaction: Interaction) => {
   }
 });
 
+const token = getEnvVar("DISCORD_TOKEN");
 client.login(token);

@@ -3,16 +3,17 @@
 Simple discord TS bot that has onMessageCreate commands, buttonInteractions commands and slash commands.
 
 ## Features
+
 - Features an easy way to set up commands (Slash commands, listener events through onMessageCreate)
 - Imgur API Calls (subreddit gallery images)
 - Apex API Calls (current map, current item rotation)
 - Faceit API Calls (Elo graph, Elo)
 
-
-
 ### Installation
+
 ---
--Set up config.json like this
+
+-Set up config.json like this (out of date)
 
 ### config.json
 
@@ -30,8 +31,11 @@ Simple discord TS bot that has onMessageCreate commands, buttonInteractions comm
 }
 
 ```
+
 ### Final steps (required)
+
 ---
+
 - Comment out everything commented `optional` in bot.ts and substitute your own code
 - A simple example would be:
 - Make a folder called eventCommands in root of project, and a file as "eventCommands.js".
@@ -39,33 +43,32 @@ Simple discord TS bot that has onMessageCreate commands, buttonInteractions comm
 ```javascript
 // This is just an example of how you could handle commands
 class Events {
-	static handleEvent = (msg, eventType) => {
-		if((eventType) == "messageCreate")
-			Events.onMessageCreate(event);
-			// etc
-	};
-	// Handling onMessageCreate events
-	static onMessageCreate = (msg) => {
-		// if-else chain for commands
-		if (msg.content === "!<command>") {
-			msg.reply(/*reply to caller*/);
-		} else if (msg.content === "!<command2>") {
-			msg.reply(/*reply to caller*/);
-		}
-		// message content parser
-		else if (msg.content.toLowerCase().includes("<keyword to look through>")) {
-			msg.reply(/*reply to caller*/);
-		}
-	}
-	// Handling ButtonEvents
-	static onInteractionCreateButton = (interaction, client) => {
-	  // example to fetch user
-	  const user = client.users.cache.get(interaction.user.id);
-	  // and DM text
-	  user.send(/*stuff*/);
-	  // or reply to interaction
-	  interaction.reply(/*stuff*/);
-	}
+  static handleEvent = (msg, eventType) => {
+    if (eventType == "messageCreate") Events.onMessageCreate(event);
+    // etc
+  };
+  // Handling onMessageCreate events
+  static onMessageCreate = (msg) => {
+    // if-else chain for commands
+    if (msg.content === "!<command>") {
+      msg.reply(/*reply to caller*/);
+    } else if (msg.content === "!<command2>") {
+      msg.reply(/*reply to caller*/);
+    }
+    // message content parser
+    else if (msg.content.toLowerCase().includes("<keyword to look through>")) {
+      msg.reply(/*reply to caller*/);
+    }
+  };
+  // Handling ButtonEvents
+  static onInteractionCreateButton = (interaction, client) => {
+    // example to fetch user
+    const user = client.users.cache.get(interaction.user.id);
+    // and DM text
+    user.send(/*stuff*/);
+    // or reply to interaction
+    interaction.reply(/*stuff*/);
+  };
 }
 
 module.exports = Events;
@@ -94,6 +97,7 @@ npm start
 ```
 
 ### Running as a service on Linux (change what's inside angled brackets, remove angled brackets)
+
 ```
 [Unit]
 Description=<yourbotname> discord bot
