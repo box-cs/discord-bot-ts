@@ -10,4 +10,3 @@ img/*
 #personal commands
 /eventCommands/**
 /eventCommands
-.env
