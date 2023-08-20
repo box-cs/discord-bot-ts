@@ -8,6 +8,6 @@ img/*
 /node_modules
 /node_modules/**
 #personal commands
-/eventCommands/**
-/eventCommands
 .env
+eventCommands/events.ts
+eventCommands/helpers.ts

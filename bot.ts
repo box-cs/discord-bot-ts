@@ -3,8 +3,9 @@ import { Interaction, Message } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
-import { CommandHandler } from "./eventCommands/Events"; // Optional
-import { EventFactory } from "./eventCommands/EventFactory";
+import { CommandHandler } from "./eventCommands/commandHandler"; // Optional
+import { Command } from "eventCommands/eventResponse"; // Optional
+const { events } = require("./eventCommands/events"); // Optional
 const { getEnvVar } = require("./lib/helpers");
 
 const client = new Client({
@@ -34,8 +35,7 @@ for (const file of commandFiles) {
     );
   }
 }
-
-EventFactory.makeEvents();
+events?.map((e: Command) => CommandHandler.addCommand(e));
 client.once("ready", () => {
   console.log(`Ready! Logged in as ${client.user.tag}`);
 });
