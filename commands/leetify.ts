@@ -28,7 +28,7 @@ const makeLeetifyEmbed = (
   } = leetifyLifetimeStats;
   const timeStamp = Date.now().toString();
   return new EmbedBuilder()
-    .setColor("#ff5500")
+    .setColor("#f84982")
     .setAuthor({
       name: `${nickname} ${helpers.emojifyADR(adr)}`,
       url: `https://steamcommunity.com/profiles/${id64}`,
