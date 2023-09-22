@@ -6,6 +6,7 @@ export type FaceitPlayer = {
   cover_image: string;
   data?: {
     player_id: string;
+    steam_id_64?: string;
   };
   faceit_url: string;
   friends_ids: string[];

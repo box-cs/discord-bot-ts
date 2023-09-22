@@ -5,7 +5,7 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 
-var imgur = require("../api/imgur/imgur-api");
+import { findImages } from "../api/imgur/imgur-api";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -68,7 +68,7 @@ module.exports = {
       (time == "day" || time == "week") && sorting == "top" ? "year" : time;
 
     try {
-      let res = await imgur.findImages(
+      const res = await findImages(
         subreddit,
         sorting,
         time,
@@ -76,9 +76,10 @@ module.exports = {
         numberOfImages
       );
 
-      var message = "";
       //loop through response, find append image link to message string
-      res.forEach((image: { link: string }) => (message += `${image.link}\n`));
+      const message = res
+        .map((image: { link: string }) => `${image.link}\n`)
+        .join("");
 
       await interaction.editReply(`${message}`);
     } catch {

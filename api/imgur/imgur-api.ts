@@ -1,5 +1,5 @@
-const { IMGUR_ID } = require("../../config.json");
-import axios, { AxiosRequestConfig } from "axios";
+import { IMGUR_ID } from "../../config.json";
+import axios from "axios";
 /**
  * Returns 100 images from subreddit gallery as promise
  * @param {string} subreddit - the subreddit imgur searches through
@@ -7,14 +7,14 @@ import axios, { AxiosRequestConfig } from "axios";
  * @param {string} time - the time range
  * @param {number} page - the page number
  */
-const searchImgurSubreddit = async (
+export const searchImgurSubreddit = async (
   subreddit: string,
   sorting: string,
   time: string,
   page: number
 ) => {
   const query = `https://api.imgur.com/3/gallery/r/${subreddit}/${sorting}/${time}/${page}`;
-  const options: AxiosRequestConfig<any> = {
+  const options = {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Client-ID ${IMGUR_ID}`,
@@ -31,31 +31,26 @@ const searchImgurSubreddit = async (
  * @param {string} time - the time range
  * @param {number} page - the page number
  */
-const findImages = async (
+export const findImages = async (
   subreddit: string,
   sorting: string,
   time: string,
   page: number,
   numOfImages: number
 ) => {
-  let res = await searchImgurSubreddit(subreddit, sorting, time, page);
+  const res = await searchImgurSubreddit(subreddit, sorting, time, page);
 
-  const images: string[] = res.data.data.map((image: { link: string }) => ({
-    link: image.link,
-  }));
+  const images: { link: string }[] = res.data.data.map(
+    (image: { link: string }) => ({
+      link: image.link,
+    })
+  );
 
-  let queriedImages: string[] = []; // this will be our functions return
-
-  // loop in order to fetch random images from request array of images
+  const queriedImages = [];
   for (let i = 0; i < numOfImages; i++) {
-    let randomNumber: number = Math.floor(Math.random() * 101);
+    const randomNumber = Math.floor(Math.random() * 101);
     queriedImages.push(images[randomNumber]);
   }
 
   return queriedImages;
-};
-
-module.exports = {
-  searchImgurSubreddit,
-  findImages,
 };

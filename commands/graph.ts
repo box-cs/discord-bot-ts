@@ -6,7 +6,7 @@ import {
   EmbedBuilder,
 } from "discord.js";
 
-const faceit = require("../api/faceit/faceit-api");
+import { getMatchHistory } from "../api/faceit/faceit-api";
 import { ChartJSNodeCanvas } from "chartjs-node-canvas";
 import {
   BubbleDataPoint,
@@ -41,8 +41,10 @@ module.exports = {
     const graphcolor = interaction.options.getString("graphcolor");
 
     try {
-      const matches = await faceit.getMatchHistory(username);
+      const matches = await getMatchHistory(username);
       const elo_history = matches
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore type this better
         .map((match: { elo: string }) => match.elo)
         .filter((elo: string | undefined) => elo !== undefined)
         .reverse();
@@ -67,8 +69,7 @@ module.exports = {
         datasets: [
           {
             label: username,
-            data: elo_history,
-
+            data: elo_history.map((elo: string) => parseInt(elo)),
             pointRadius: 0,
             fill: false,
             borderColor: borderColor,
@@ -101,7 +102,11 @@ module.exports = {
 export {};
 
 function MakeGraphConfig(
-  data: any
+  data: ChartConfiguration<
+    keyof ChartTypeRegistry,
+    (number | ScatterDataPoint | BubbleDataPoint)[],
+    unknown
+  >["data"]
 ): ChartConfiguration<
   keyof ChartTypeRegistry,
   (number | ScatterDataPoint | BubbleDataPoint)[],
@@ -141,6 +146,6 @@ function MakeGraphConfig(
       },
       layout: { padding: 30 },
     },
-    plugins: [] as any[],
+    plugins: [],
   };
 }

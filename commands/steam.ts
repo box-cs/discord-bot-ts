@@ -3,9 +3,12 @@ import {
   SlashCommandStringOption,
   SlashCommandBuilder,
 } from "discord.js";
-const faceit = require("../api/faceit/faceit-api");
-const steam = require("../api/steam/steam-api");
-const helpers = require("../lib/helpers");
+import {
+  searchPlayerFromSteamID,
+  searchPlayerStats,
+} from "../api/faceit/faceit-api";
+import { resolveSteamID } from "../api/steam/steam-api";
+import { extractPlayerData, makeEloEmbed } from "../lib/helpers";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -22,11 +25,15 @@ module.exports = {
     await interaction.deferReply();
     const url = interaction.options.getString("url");
     try {
-      const steamId = await steam.resolveSteamID(url);
-      const data = (await faceit.searchPlayerFromSteamID(steamId))?.data;
-      const player = helpers.extractPlayerData(data);
-      const playerStats = (await faceit.searchPlayerStats(player.name))?.data;
-      const messageEmbed = helpers.buildEloEmbed(player, playerStats);
+      const steamId = await resolveSteamID(url);
+      const data = (await searchPlayerFromSteamID(steamId))?.data;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore type this better
+      const player = extractPlayerData(data);
+      const playerStats = (await searchPlayerStats(player.name))?.data;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore type this better
+      const messageEmbed = makeEloEmbed(player, playerStats);
       await interaction.editReply({ embeds: [messageEmbed] });
     } catch {
       await interaction.editReply("No FACEIT account found.");

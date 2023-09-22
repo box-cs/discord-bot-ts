@@ -1,5 +1,5 @@
-const faceit = require("../api/faceit/faceit-api");
-const helpers = require("../lib/helpers");
+import { searchPlayerStats, searchPlayer } from "../api/faceit/faceit-api";
+import { extractPlayerData, makeEloEmbed } from "../lib/helpers";
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
@@ -21,10 +21,14 @@ module.exports = {
     await interaction.deferReply();
     const username = interaction.options.getString("username");
     try {
-      const data = (await faceit.searchPlayer(username))?.data;
-      const player = helpers.extractPlayerData(data);
-      const playerStats = (await faceit.searchPlayerStats(username))?.data;
-      const messageEmbed = helpers.buildEloEmbed(player, playerStats);
+      const data = (await searchPlayer(username))?.data;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore type this better
+      const player = extractPlayerData(data);
+      const playerStats = (await searchPlayerStats(username))?.data;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore type this better
+      const messageEmbed = makeEloEmbed(player, playerStats);
       await interaction.editReply({ embeds: [messageEmbed] });
     } catch {
       await interaction.editReply("Player not found?");
