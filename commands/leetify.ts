@@ -84,8 +84,7 @@ module.exports = {
       const isSteamUrl = input.includes("steamcommunity.com");
       const id64 = isSteamUrl
         ? await steam.resolveSteamID(input)
-        : (await faceit.searchPlayer(input)).steam_id_64;
-
+        : (await faceit.searchPlayer(input)).data.steam_id_64;
       const leetifyStats = await leetify.getLeetifyUserLifetimeStats(id64);
       await interaction.editReply({
         embeds: [makeLeetifyEmbed(leetifyStats as LeetifyLifetimeStats)],
