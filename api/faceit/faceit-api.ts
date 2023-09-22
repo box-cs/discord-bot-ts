@@ -1,5 +1,6 @@
 const { FACEIT_API_KEY } = require("../../config.json");
 import axios, { AxiosRequestConfig } from "axios";
+import { FaceitPlayer } from "./types";
 
 /**
  * Authorization headers
@@ -14,7 +15,7 @@ const options: AxiosRequestConfig<any> = {
  * Gets FACEIT player data from username
  * @returns player data
  */
-const searchPlayer = async (username: string) => {
+const searchPlayer = async (username: string): Promise<FaceitPlayer> => {
   const query = `https://open.faceit.com/data/v4/players?nickname=${username}&game=csgo`;
   return axios.get(query, options);
 };
@@ -22,7 +23,9 @@ const searchPlayer = async (username: string) => {
  * Gets FACEIT player data from steamID
  * @returns player data
  */
-const searchPlayerFromSteamID = async (steamID: string) => {
+const searchPlayerFromSteamID = async (
+  steamID: string
+): Promise<FaceitPlayer> => {
   const query = `https://open.faceit.com/data/v4/players?game=csgo&game_player_id=${steamID}`;
   return axios.get(query, options);
 };
