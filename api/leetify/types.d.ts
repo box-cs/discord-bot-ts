@@ -9,6 +9,8 @@ export type LeetifyLifetimeStats = {
   hsKillsPercentage: number;
 };
 
+export type DataSource = "matchmaking" | "faceit";
+
 export type LeetifyUser = {
   nickname: string;
   pictureUrl: string;
@@ -67,8 +69,6 @@ export type Game = {
   dataSource?: DataSource;
   isWon?: boolean;
 };
-
-export type DataSource = "matchmaking"; // | Faceit | cs2 ?
 
 export type MultiKills = {
   "2": MultiKill;

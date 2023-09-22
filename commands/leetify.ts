@@ -1,4 +1,4 @@
-import { LeetifyLifetimeStats } from "api/leetify/types";
+import { DataSource, LeetifyLifetimeStats } from "api/leetify/types";
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
@@ -78,17 +78,45 @@ module.exports = {
         .setName("input")
         .setDescription("Enter a steam URL or FACEIT username")
         .setRequired(true)
+    )
+    .addStringOption((option: SlashCommandStringOption) =>
+      option
+        .setName("service")
+        .addChoices({
+          name: "Both",
+          value: "both",
+        })
+        .addChoices({
+          name: "Matchmaking",
+          value: "matchmaking",
+        })
+        .addChoices({
+          name: "FACEIT",
+          value: "faceit",
+        })
+        .setDescription("Enter a steam URL or FACEIT username")
+        .setRequired(true)
     ),
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     await interaction.deferReply();
     const input = interaction.options.getString("input");
+    const dataSourceOption = interaction.options.getString("service");
+    const dataSources = (
+      dataSourceOption === "both"
+        ? ["matchmaking", "faceit"]
+        : [dataSourceOption]
+    ) as DataSource[];
+
     try {
       const isSteamUrl = input.includes("steamcommunity.com");
       const id64 = isSteamUrl
         ? await steam.resolveSteamID(input)
         : (await faceit.searchPlayer(input)).data.steam_id_64;
-      const leetifyStats = await leetify.getLeetifyUserLifetimeStats(id64);
+      const leetifyStats = await leetify.getLeetifyUserLifetimeStats(
+        id64,
+        dataSources
+      );
       await interaction.editReply({
         embeds: [makeLeetifyEmbed({ ...leetifyStats, id64 })],
       });
