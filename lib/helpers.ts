@@ -35,6 +35,18 @@ function emojifyKD(kd: number): string {
   }
 }
 
+function emojifyADR(adr: number): string {
+  const emojiResponses = ["🌌", "⚡", "💀"];
+  switch (true) {
+    case adr > 90:
+      return emojiResponses[0];
+    case adr > 85:
+      return emojiResponses[1];
+    default:
+      return emojiResponses[2];
+  }
+}
+
 function extractPlayerData(data: Player & { games: any }) {
   return {
     name: data?.nickname,
@@ -78,7 +90,7 @@ function makeEloEmbed(
   return messageEmbed;
 }
 
-function ExtractApexAPIData(apexAPIData: ApexAPIData) {
+function extractApexAPIData(apexAPIData: ApexAPIData) {
   const { map: triosMap, remainingTimer: timeRemaining } =
     apexAPIData.battle_royale.current;
   const {
@@ -117,7 +129,7 @@ function handleChoice(
   data: ApexAPIData | any[]
 ): { map: string; embedMessage: string } {
   if (choice === "Map") {
-    return ExtractApexAPIData(data as ApexAPIData);
+    return extractApexAPIData(data as ApexAPIData);
   }
 
   const items: string[] = [];
@@ -140,8 +152,9 @@ function handleChoice(
 
 module.exports = {
   extractPlayerData,
-  ExtractApexAPIData,
+  extractApexAPIData,
   handleChoice,
+  emojifyADR,
   buildEloEmbed: makeEloEmbed,
   toTitleCase,
   ansiBlock,
