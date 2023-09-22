@@ -40,5 +40,6 @@ export const getLeetifyUserLifetimeStats = async (
     kd: userStats.current.gamesTotals.killDeathRatio,
     kpr: userStats.current.gamesTotals.avgKillsPerRound,
     leetifyRating: userStats.current.gamesTotals.leetifyRating,
+    hsKillsPercentage: userStats.current.gamesTotals.hsKillsPercentage,
   };
 };

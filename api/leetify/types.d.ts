@@ -6,6 +6,7 @@ export type LeetifyLifetimeStats = {
   kd: number;
   kpr: number;
   leetifyRating: number;
+  hsKillsPercentage: number;
 };
 
 export type LeetifyUser = {

@@ -10,17 +10,30 @@ const faceit = require("../api/faceit/faceit-api");
 const steam = require("../api/steam/steam-api");
 const helpers = require("../lib/helpers");
 
-const makeLeetifyEmbed = (leetifyLifetimeStats: LeetifyLifetimeStats) => {
-  const { adr, kpr, leetifyRating, hltvRating, kd, nickname, pictureUrl } =
-    leetifyLifetimeStats;
+const makeLeetifyEmbed = (
+  leetifyLifetimeStats: LeetifyLifetimeStats & {
+    id64: string;
+  }
+) => {
+  const {
+    adr,
+    kpr,
+    leetifyRating,
+    hltvRating,
+    kd,
+    hsKillsPercentage,
+    nickname,
+    pictureUrl,
+    id64,
+  } = leetifyLifetimeStats;
   const timeStamp = Date.now().toString();
   return new EmbedBuilder()
     .setColor("#ff5500")
     .setAuthor({
       name: `${nickname} ${helpers.emojifyADR(adr)}`,
-      iconURL: pictureUrl,
-      url: pictureUrl,
+      url: `https://steamcommunity.com/profiles/${id64}`,
     })
+    .setThumbnail(pictureUrl)
     .addFields(
       {
         name: "HLTV",
@@ -33,29 +46,19 @@ const makeLeetifyEmbed = (leetifyLifetimeStats: LeetifyLifetimeStats) => {
         inline: true,
       },
       {
-        name: "\u200B",
-        value: "\u200B",
-        inline: true,
-      },
-      {
         name: "ADR",
         value: adr.toString(),
         inline: true,
       },
       { name: "KD", value: kd.toString(), inline: true },
       {
-        name: "\u200B",
-        value: "\u200B",
-        inline: true,
-      },
-      {
         name: "KPR",
         value: kpr.toString(),
         inline: true,
       },
       {
-        name: "\u200B",
-        value: "\u200B",
+        name: "HS%",
+        value: `${(hsKillsPercentage * 100).toPrecision(2)}%`,
         inline: true,
       },
       {
@@ -87,7 +90,7 @@ module.exports = {
         : (await faceit.searchPlayer(input)).data.steam_id_64;
       const leetifyStats = await leetify.getLeetifyUserLifetimeStats(id64);
       await interaction.editReply({
-        embeds: [makeLeetifyEmbed(leetifyStats as LeetifyLifetimeStats)],
+        embeds: [makeLeetifyEmbed({ ...leetifyStats, id64 })],
       });
     } catch (err) {
       console.log(err);
