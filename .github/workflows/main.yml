@@ -8,4 +8,4 @@ jobs:
       - name: install dependencies
         run: npm i
       - name: lint
-        run: npx run eslint . --ext .ts
+        run: npx run eslint
