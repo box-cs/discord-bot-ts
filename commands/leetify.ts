@@ -94,7 +94,7 @@ module.exports = {
           name: "FACEIT",
           value: "faceit",
         })
-        .setDescription("Enter a steam URL or FACEIT username")
+        .setDescription("Choose a matchmaking service")
         .setRequired(true)
     ),
 
