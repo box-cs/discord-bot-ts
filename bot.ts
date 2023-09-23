@@ -22,10 +22,11 @@ const commandFiles: string[] = fs
 
 for (const file of commandFiles) {
   const filePath = path.join(pathToCommands, file);
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const command = require(filePath);
   // Set a new item in the Collection with the key as the command name and the value as the exported module
   if ("data" in command && "execute" in command) {
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     commands.set(command.data.name, command);
   } else {
     console.log(
@@ -61,6 +62,7 @@ client.on("interactionCreate", async (interaction: Interaction) => {
     );
 
   try {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     await command.execute(interaction);
   } catch (error) {
