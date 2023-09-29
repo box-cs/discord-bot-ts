@@ -46,7 +46,9 @@ const makeLeetifyEmbed = (
       },
       {
         name: "Rating",
-        value: leetifyRating.toString(),
+        value: `${leetifyRating > 0 ? "+" : ""}${(
+          leetifyRating * 100
+        ).toPrecision(3)}`,
         inline: true,
       },
       {
