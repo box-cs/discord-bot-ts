@@ -13,6 +13,7 @@ const commandFiles: string[] = fs
   .filter((file: string) => file.endsWith(".ts"));
 
 for (const file of commandFiles) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const command: { data: SlashCommandBuilder } = require(`./commands/${file}`);
   commands.push(command.data.toJSON());
 }

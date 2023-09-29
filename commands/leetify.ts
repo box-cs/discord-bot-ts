@@ -1,14 +1,18 @@
-import { DataSource, LeetifyLifetimeStats } from "api/leetify/types";
+import {
+  DataSource,
+  GameVersion,
+  LeetifyLifetimeStats,
+} from "api/leetify/types";
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
   SlashCommandBuilder,
   EmbedBuilder,
 } from "discord.js";
-const leetify = require("../api/leetify/leetify-api");
-const faceit = require("../api/faceit/faceit-api");
-const steam = require("../api/steam/steam-api");
-const helpers = require("../lib/helpers");
+import { getLeetifyUserLifetimeStats } from "../api/leetify/leetify-api";
+import { searchPlayer } from "../api/faceit/faceit-api";
+import { resolveSteamID } from "../api/steam/steam-api";
+import { emojifyADR } from "../lib/helpers";
 
 const makeLeetifyEmbed = (
   leetifyLifetimeStats: LeetifyLifetimeStats & {
@@ -30,7 +34,7 @@ const makeLeetifyEmbed = (
   return new EmbedBuilder()
     .setColor("#f84982")
     .setAuthor({
-      name: `${nickname} ${helpers.emojifyADR(adr)}`,
+      name: `${nickname} ${emojifyADR(adr)}`,
       url: `https://steamcommunity.com/profiles/${id64}`,
     })
     .setThumbnail(pictureUrl)
@@ -42,7 +46,9 @@ const makeLeetifyEmbed = (
       },
       {
         name: "Rating",
-        value: leetifyRating.toString(),
+        value: `${leetifyRating > 0 ? "+" : ""}${(
+          leetifyRating * 100
+        ).toPrecision(3)}`,
         inline: true,
       },
       {
@@ -94,7 +100,25 @@ module.exports = {
           name: "FACEIT",
           value: "faceit",
         })
-        .setDescription("Enter a steam URL or FACEIT username")
+        .setDescription("Choose a matchmaking service")
+        .setRequired(true)
+    )
+    .addStringOption((option: SlashCommandStringOption) =>
+      option
+        .setName("version")
+        .addChoices({
+          name: "cs2",
+          value: "cs2",
+        })
+        .addChoices({
+          name: "csgo",
+          value: "csgo",
+        })
+        .addChoices({
+          name: "Both",
+          value: "both",
+        })
+        .setDescription("Choose a game version")
         .setRequired(true)
     ),
 
@@ -102,26 +126,33 @@ module.exports = {
     await interaction.deferReply();
     const input = interaction.options.getString("input");
     const dataSourceOption = interaction.options.getString("service");
+    const gameVersionOption = interaction.options.getString("version");
+
     const dataSources = (
       dataSourceOption === "both"
         ? ["matchmaking", "faceit"]
         : [dataSourceOption]
     ) as DataSource[];
 
+    const gameVersions = (
+      gameVersionOption === "both" ? ["csgo", "cs2"] : [gameVersionOption]
+    ) as GameVersion[];
+
     try {
       const isSteamUrl = input.includes("steamcommunity.com");
       const id64 = isSteamUrl
-        ? await steam.resolveSteamID(input)
-        : (await faceit.searchPlayer(input)).data.steam_id_64;
-      const leetifyStats = await leetify.getLeetifyUserLifetimeStats(
+        ? await resolveSteamID(input)
+        : (await searchPlayer(input)).data.steam_id_64;
+
+      const leetifyStats = await getLeetifyUserLifetimeStats(
         id64,
-        dataSources
+        dataSources,
+        gameVersions
       );
       await interaction.editReply({
         embeds: [makeLeetifyEmbed({ ...leetifyStats, id64 })],
       });
     } catch (err) {
-      console.log(err);
       await interaction.editReply("No leetify account found.");
     }
   },

@@ -1,7 +1,7 @@
-const { STEAM_API_KEY } = require("../../config.json");
+import { STEAM_API_KEY } from "../../config.json";
 import axios from "axios";
 
-const getResolvedSteamID = async (vanityURL: string) => {
+export const getResolvedSteamID = async (vanityURL: string) => {
   const query = `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${STEAM_API_KEY}&vanityurl=${vanityURL}`;
   return axios.get(query);
 };
@@ -9,7 +9,7 @@ const getResolvedSteamID = async (vanityURL: string) => {
  * @param url steamcommunity profile url
  * @returns resolved steamID
  */
-const resolveSteamID = async (url: string) => {
+export const resolveSteamID = async (url: string) => {
   // https://steamcommunity.com/profiles/{id64}/
   // https://steamcommunity.com/id/{vanityId}/
   const linkType = url.split("/").at(3);
@@ -17,7 +17,7 @@ const resolveSteamID = async (url: string) => {
 
   if (linkType === "id") {
     const res = await getResolvedSteamID(id);
-    const { response } = res?.data;
+    const { response } = res.data;
     if (response && response?.success == 1) {
       id = response?.steamid;
     } else {
@@ -26,8 +26,4 @@ const resolveSteamID = async (url: string) => {
   }
 
   return id;
-};
-
-module.exports = {
-  resolveSteamID,
 };

@@ -5,7 +5,7 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 import { APEX_API_KEY } from "../config.json";
-const helpers = require("../lib/helpers");
+import { handleChoice, map_images } from "../lib/helpers";
 import axios from "axios";
 
 module.exports = {
@@ -32,13 +32,13 @@ module.exports = {
 
     try {
       const res = await axios.get(path);
-      const { map, embedMessage } = helpers.handleChoice(choice, res?.data);
+      const { map, embedMessage } = handleChoice(choice, res?.data);
 
       const messageEmbed: EmbedBuilder = new EmbedBuilder()
         .setColor("#d2c40f")
         .setURL("https://apexlegendsapi.com")
         .setDescription(embedMessage)
-        .setImage(map && helpers.map_images[map])
+        .setImage(map && map_images[map])
         .setTimestamp();
 
       await interaction.editReply({ embeds: [messageEmbed] });

@@ -1,7 +1,7 @@
 import { EmbedBuilder } from "discord.js";
 import { ApexAPIData, Player } from "./interfaces";
 
-const map_images: { [key: string]: string } = {
+export const map_images: { [key: string]: string } = {
   "World's Edge":
     "https://static.wikia.nocookie.net/apexlegends_gamepedia_en/images/9/91/Loadingscreen_World%27s_Edge_MU3.png/revision/latest/scale-to-width-down/240?cb=20210804105812",
   "Storm Point":
@@ -12,11 +12,11 @@ const map_images: { [key: string]: string } = {
     "https://static.wikia.nocookie.net/apexlegends_gamepedia_en/images/c/cf/Loadingscreen_Kings_Canyon_MU3.png/revision/latest/scale-to-width-down/240?cb=20210202220042",
 };
 
-function ansiBlock(str: string) {
+export function ansiBlock(str: string) {
   return `\`\`\`ansi\n${str}\`\`\``;
 }
 
-function toTitleCase(str: string): string {
+export function toTitleCase(str: string): string {
   return str
     ?.split(/(?=[A-Z])/)
     ?.map((word) => word[0].toUpperCase() + word.slice(1))
@@ -35,7 +35,7 @@ function emojifyKD(kd: number): string {
   }
 }
 
-function emojifyADR(adr: number): string {
+export function emojifyADR(adr: number): string {
   const emojiResponses = ["🌌", "⚡", "💀"];
   switch (true) {
     case adr > 90:
@@ -47,7 +47,16 @@ function emojifyADR(adr: number): string {
   }
 }
 
-function extractPlayerData(data: Player & { games: any }) {
+export function extractPlayerData(
+  data: Player & {
+    games: {
+      csgo: {
+        skill_level: number;
+        faceit_elo: number;
+      };
+    };
+  }
+) {
   return {
     name: data?.nickname,
     avatar: data?.avatar,
@@ -58,9 +67,20 @@ function extractPlayerData(data: Player & { games: any }) {
   };
 }
 
-function makeEloEmbed(
-  player: Player & { name: string; csgo: any },
-  playerStats: { lifetime: any }
+export function makeEloEmbed(
+  player: Player & {
+    name: string;
+    csgo: {
+      elo: string;
+      level: string;
+    };
+  },
+  playerStats: {
+    lifetime: {
+      "Average K/D Ratio": number;
+      "Recent Results": number[];
+    };
+  }
 ) {
   const kd = playerStats?.lifetime["Average K/D Ratio"];
   const recentResults = playerStats?.lifetime["Recent Results"]
@@ -90,7 +110,7 @@ function makeEloEmbed(
   return messageEmbed;
 }
 
-function extractApexAPIData(apexAPIData: ApexAPIData) {
+export function extractApexAPIData(apexAPIData: ApexAPIData) {
   const { map: triosMap, remainingTimer: timeRemaining } =
     apexAPIData.battle_royale.current;
   const {
@@ -124,9 +144,9 @@ function extractApexAPIData(apexAPIData: ApexAPIData) {
   };
 }
 
-function handleChoice(
+export function handleChoice(
   choice: string,
-  data: ApexAPIData | any[]
+  data: ApexAPIData | unknown[]
 ): { map: string; embedMessage: string } {
   if (choice === "Map") {
     return extractApexAPIData(data as ApexAPIData);
@@ -149,14 +169,3 @@ function handleChoice(
     embedMessage: ansiBlock([...new Set(items)].join("\n")),
   };
 }
-
-module.exports = {
-  extractPlayerData,
-  extractApexAPIData,
-  handleChoice,
-  emojifyADR,
-  buildEloEmbed: makeEloEmbed,
-  toTitleCase,
-  ansiBlock,
-  map_images,
-};
