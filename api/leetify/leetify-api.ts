@@ -1,5 +1,6 @@
 import {
   DataSource,
+  GameVersion,
   GeneralData,
   LeetifyLifetimeStats,
   LeetifyUser,
@@ -24,10 +25,14 @@ const getLeetifyUser = async (steam64Id: string): Promise<LeetifyUser> => {
 
 const getGeneralStats = async (
   leetifyUserId: string,
-  dataSources: DataSource[]
+  dataSources: DataSource[],
+  gameVersions: GameVersion[]
 ): Promise<GeneralData> => {
   const dataSourcesQuery = dataSources.map((x) => `&dataSources=${x}`).join("");
-  const url = `https://api.leetify.com/api/general-data?side=null&roundEconomyType=null${dataSourcesQuery}&spectatingId=${leetifyUserId}`;
+  const gameVersionsQuery = gameVersions
+    .map((x) => `&gameVersions=${x}`)
+    .join("");
+  const url = `https://api.leetify.com/api/general-data?side=null&roundEconomyType=null${dataSourcesQuery}${gameVersionsQuery}&spectatingId=${leetifyUserId}`;
   const res = await fetch(url, {
     method: "GET",
     headers,
@@ -38,10 +43,15 @@ const getGeneralStats = async (
 
 export const getLeetifyUserLifetimeStats = async (
   steam64Id: string,
-  dataSources: DataSource[]
+  dataSources: DataSource[],
+  gameVersions: GameVersion[]
 ): Promise<LeetifyLifetimeStats> => {
   const leetifyUser = await getLeetifyUser(steam64Id);
-  const userStats = await getGeneralStats(leetifyUser.userId, dataSources);
+  const userStats = await getGeneralStats(
+    leetifyUser.userId,
+    dataSources,
+    gameVersions
+  );
   return {
     nickname: leetifyUser.nickname,
     pictureUrl: leetifyUser.pictureUrl,

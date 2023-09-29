@@ -1,4 +1,8 @@
-import { DataSource, LeetifyLifetimeStats } from "api/leetify/types";
+import {
+  DataSource,
+  GameVersion,
+  LeetifyLifetimeStats,
+} from "api/leetify/types";
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
@@ -96,29 +100,57 @@ module.exports = {
         })
         .setDescription("Choose a matchmaking service")
         .setRequired(true)
+    )
+    .addStringOption((option: SlashCommandStringOption) =>
+      option
+        .setName("version")
+        .addChoices({
+          name: "cs2",
+          value: "cs2",
+        })
+        .addChoices({
+          name: "csgo",
+          value: "csgo",
+        })
+        .addChoices({
+          name: "Both",
+          value: "both",
+        })
+        .setDescription("Choose a game version")
+        .setRequired(true)
     ),
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     await interaction.deferReply();
     const input = interaction.options.getString("input");
     const dataSourceOption = interaction.options.getString("service");
+    const gameVersionOption = interaction.options.getString("version");
+
     const dataSources = (
       dataSourceOption === "both"
         ? ["matchmaking", "faceit"]
         : [dataSourceOption]
     ) as DataSource[];
 
+    const gameVersions = (
+      gameVersionOption === "both" ? ["csgo", "cs2"] : [gameVersionOption]
+    ) as GameVersion[];
+
     try {
       const isSteamUrl = input.includes("steamcommunity.com");
       const id64 = isSteamUrl
         ? await resolveSteamID(input)
         : (await searchPlayer(input)).data.steam_id_64;
-      const leetifyStats = await getLeetifyUserLifetimeStats(id64, dataSources);
+
+      const leetifyStats = await getLeetifyUserLifetimeStats(
+        id64,
+        dataSources,
+        gameVersions
+      );
       await interaction.editReply({
         embeds: [makeLeetifyEmbed({ ...leetifyStats, id64 })],
       });
     } catch (err) {
-      console.log(err);
       await interaction.editReply("No leetify account found.");
     }
   },

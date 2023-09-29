@@ -9,6 +9,7 @@ export type LeetifyLifetimeStats = {
   hsKillsPercentage: number;
 };
 
+export type GameVersion = "csgo" | "cs2";
 export type DataSource = "matchmaking" | "faceit";
 
 export type LeetifyUser = {
