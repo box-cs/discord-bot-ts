@@ -2,6 +2,9 @@ name: CI
 on: push
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: /home/runner/work/discord-bot-ts/discord-bot-ts
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
