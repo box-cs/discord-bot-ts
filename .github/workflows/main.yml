@@ -7,8 +7,11 @@ jobs:
         working-directory: /home/runner/work/discord-bot-ts/discord-bot-ts
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.14.1"
       - uses: actions/checkout@v3
       - name: install dependencies
         run: npm i
       - name: lint
-        run: npx run eslint
+        run: ./node_modules/.bin/eslint .
