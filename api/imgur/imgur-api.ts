@@ -1,5 +1,7 @@
-import { IMGUR_ID } from "../../config.json";
 import axios from "axios";
+import { env } from "../../lib/config";
+
+const IMGUR_ID = env.get("IMGUR_ID") as string;
 /**
  * Returns 100 images from subreddit gallery as promise
  * @param {string} subreddit - the subreddit imgur searches through

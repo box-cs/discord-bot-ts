@@ -1,3 +1,4 @@
+import { env } from "../../lib/config";
 import {
   DataSource,
   GameVersion,
@@ -5,8 +6,8 @@ import {
   LeetifyLifetimeStats,
   LeetifyUser,
 } from "./types";
-import { LEETIFY_API_TOKEN } from "../../config.json";
 
+const LEETIFY_API_TOKEN = env.get("LEETIFY_API_TOKEN") as string;
 const headers = {
   "Content-Type": "application/json",
   Authorization: `Bearer ${LEETIFY_API_TOKEN}`,

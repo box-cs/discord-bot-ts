@@ -2,9 +2,9 @@ import { Interaction, Message } from "discord.js";
 import fs from "node:fs";
 import path from "node:path";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
-import { token } from "./config.json";
-import { CommandHandler } from "./eventCommands/Events"; // Optional
-import { EventFactory } from "./eventCommands/EventFactory";
+import { CommandHandler } from "./core/Events"; // Optional
+import { EventFactory } from "./core/EventFactory";
+import { env } from "./lib/config";
 
 const client = new Client({
   intents: [
@@ -73,4 +73,4 @@ client.on("interactionCreate", async (interaction: Interaction) => {
   }
 });
 
-client.login(token);
+client.login(env.get("DISCORD_TOKEN") as string);
