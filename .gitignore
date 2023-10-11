@@ -1,12 +1,10 @@
-#contains tokens/secrets
-config.json
-#test file that I write junk js code on to port into a command
+.env
 test.js
 img/*
 *.sh
 *.bat
 /node_modules
 /node_modules/**
-#personal commands
-/eventCommands/**
-/eventCommands
+# personal commands
+/core/**
+/core

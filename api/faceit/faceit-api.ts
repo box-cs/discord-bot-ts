@@ -1,6 +1,8 @@
-import { FACEIT_API_KEY } from "../../config.json";
 import axios from "axios";
 import { FaceitPlayer } from "./types";
+import { env } from "../../lib/config";
+
+const FACEIT_API_KEY = env.get("FACEIT_API_KEY");
 
 const options = {
   headers: {

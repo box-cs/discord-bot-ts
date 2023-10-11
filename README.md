@@ -7,28 +7,28 @@ Simple discord TS bot that has onMessageCreate commands, buttonInteractions comm
 - Imgur API Calls (subreddit gallery images)
 - Apex API Calls (current map, current item rotation)
 - Faceit API Calls (Elo graph, Elo)
-
+- Leetifi API Calss (Leetify rating, HLTV 1.0 rating, misc CS2 stats)
 
 
 ### Installation
 ---
--Set up config.json like this
+-Set up .env file like this
 
-### config.json
+### .env
 
-```JSON
-{
-	"token": "your_token",
-	"guildId": ["your_channel's_id", "another_channel's_id"],
-	"clientId":"your_bot's_id",
-	"APEX_API_KEY":"visit https://api.mozambiquehe.re/",
-	"FACEIT_API_KEY":"visit https://developers.faceit.com/",
-	"IMGUR_ID" : "visit https://apidocs.imgur.com/",
-	"IMGUR_SECRET" : "visit https://apidocs.imgur.com/",
-	"WelcomeChannel" : "your_welcome_channel's_id",
-	"OWNERID" : "your_own_id"
-}
-
+```bash
+APEX_API_KEY=""
+BOT_CLIENT_ID=""
+DISCORD_TOKEN=""
+FACEIT_API_KEY=""
+IMGUR_ID=""
+IMGUR_SECRET=""
+LEETIFY_API_TOKEN=""
+OWNER_ID=""
+PERSONAL_GUILD_IDS="" # comma separated
+STEAM_API_KEY=""
+TRACKER_API_KEY=""
+WELCOME_CHANNEL=""
 ```
 ### Final steps (required)
 ---

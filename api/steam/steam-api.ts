@@ -1,5 +1,7 @@
-import { STEAM_API_KEY } from "../../config.json";
 import axios from "axios";
+import { env } from "../../lib/config";
+
+const STEAM_API_KEY = env.get("STEAM_API_KEY") as string;
 
 export const getResolvedSteamID = async (vanityURL: string) => {
   const query = `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${STEAM_API_KEY}&vanityurl=${vanityURL}`;
