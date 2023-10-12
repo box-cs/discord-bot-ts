@@ -1,6 +1,5 @@
-import { EventHandler, Privacy, ResponseType } from "core/eventHandler";
+import { EventHandler, Privacy, ResponseType } from "../core/eventHandler";
 import {
-  BaseGuildTextChannel,
   ChatInputCommandInteraction,
   SlashCommandStringOption,
   SlashCommandBuilder,
@@ -8,8 +7,8 @@ import {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("add an event")
-    .setDescription("Cute spam")
+    .setName("event")
+    .setDescription("Adds a bot event which can be called with !keyword")
     .addStringOption((option: SlashCommandStringOption) =>
       option
         .setName("keyword")
@@ -33,19 +32,18 @@ module.exports = {
     const keyword = interaction.options.getString("keyword");
     const action = interaction.options.getString("action");
     const description = interaction.options.getString("description");
-    const channel = interaction.channel as BaseGuildTextChannel;
-
-    await channel.send(`Use !${keyword} to call the event`);
-    EventHandler.addEvent({
+    const event = EventHandler.makeEvent(
+      [`!${keyword}`],
       action,
-      guildId: interaction.guildId,
+      ResponseType.reply,
       description,
-      keywords: [keyword],
-      privacy: Privacy.private,
-      responseType: ResponseType.reply,
-      isAllowedInGuild: (messageGuildId: string) =>
-        messageGuildId === interaction.guildId,
-    });
+      Privacy.private,
+      interaction.guildId
+    );
+    EventHandler.addEvent(event);
+
+    await interaction.reply(`Use !${keyword} to call the event`);
   },
 };
+
 export {};
