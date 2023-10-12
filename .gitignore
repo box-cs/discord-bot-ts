@@ -5,6 +5,5 @@ img/*
 *.bat
 /node_modules
 /node_modules/**
-# personal commands
-/core/**
-/core
+/core/*.ts
+!core/eventHandler.ts
