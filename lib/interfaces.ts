@@ -1,9 +1,9 @@
-export interface Player {
+export type Player = {
   nickname: string;
   avatar: string;
-}
+};
 
-export interface MapData {
+export type MapData = {
   current: {
     map: string;
     remainingTimer: string;
@@ -11,9 +11,9 @@ export interface MapData {
   next: {
     map: string;
   };
-}
+};
 
-export interface ApexAPIData {
+export type ApexAPIData = {
   battle_royale: MapData;
   ranked: MapData;
-}
+};

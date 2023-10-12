@@ -26,7 +26,7 @@ const rest = new REST({ version: "9" }).setToken(discordToken);
     }
   }
 
-  const guildIds = env.get("PERSONAL_GUILD_IDS") as string[];
+  const guildIds = env.get<string[]>("PERSONAL_GUILD_IDS");
   for (const guildId of guildIds) {
     rest
       .put(Routes.applicationGuildCommands(clientId, guildId), {
