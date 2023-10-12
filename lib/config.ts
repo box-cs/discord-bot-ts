@@ -17,10 +17,10 @@ const config: Record<string, string> = {
 };
 
 export const env = {
-  get: (key: string): string | string[] => {
+  get: <T = string | string[]>(key: string): T => {
     const envVar = config[key];
     if (!envVar) throw new Error(`Missing environment variable ${key}`);
-    if (envVar.includes(",")) return envVar.split(",");
-    return envVar;
+    if (envVar.includes(",")) return envVar.split(",") as T;
+    return envVar as T;
   },
 };
