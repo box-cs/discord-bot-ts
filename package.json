@@ -1,8 +1,8 @@
 {
-  "name": "discordbotjs",
+  "name": "discordbot-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "bot.js",
+  "main": "bot.ts",
   "scripts": {
     "start": "ts-node deploy-commands.ts && ts-node bot.ts",
     "debug": "ts-node bot.ts"
@@ -22,9 +22,11 @@
     "discord.js": "^14.0.4-dev.1658491502-74ec7be.0",
     "dotenv": "^16.3.1",
     "libsodium-wrappers": "^0.7.10",
+    "pg": "^8.11.3",
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
+    "@types/pg": "^8.10.5",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.50.0",
