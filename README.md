@@ -42,11 +42,13 @@ npm install
 
 ```Bash
 #!/usr/bin/bash
+
 cd <path-to-bot>
 npm start
 ```
 ### Installing PosgresSQL (WSL)
 ```
+sudo apt-get install build-essential
 sudo apt install postgresql postgresql-contrib #installing postgres
 sudo systemctl start postgresql.service 
 sudo -i -u postgres # switching to postgres account
@@ -54,8 +56,10 @@ sudo -i -u postgres # switching to postgres account
 
 ```sql
 CREATE DATABASE db;
+\c db;
 CREATE USER user with encrypted password 'somepassword';
 GRANT ALL PRIVILEGES ON DATABASE db to user;
+GRANT CREATE ON SCHEMA public TO user; # might need this
 ```
 ### Running as a service on Linux (change what's inside angled brackets, remove angled brackets)
 ```
