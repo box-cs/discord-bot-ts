@@ -8,7 +8,7 @@ import { handleChoice, map_images } from "../lib/helpers";
 import axios from "axios";
 import { env } from "../lib/config";
 
-const APEX_API_KEY = env.get("APEX_API_KEY") as string;
+const APEX_API_KEY = env.get<string>("APEX_API_KEY");
 
 module.exports = {
   data: new SlashCommandBuilder()

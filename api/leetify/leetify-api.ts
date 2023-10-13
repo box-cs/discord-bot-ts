@@ -7,7 +7,7 @@ import {
   LeetifyUser,
 } from "./types";
 
-const LEETIFY_API_TOKEN = env.get("LEETIFY_API_TOKEN") as string;
+const LEETIFY_API_TOKEN = env.get<string>("LEETIFY_API_TOKEN");
 const headers = {
   "Content-Type": "application/json",
   Authorization: `Bearer ${LEETIFY_API_TOKEN}`,

@@ -12,8 +12,8 @@ const commandFiles: string[] = fs
   .readdirSync("./commands")
   .filter((file: string) => file.endsWith(".ts"));
 
-const discordToken = env.get("DISCORD_TOKEN") as string;
-const clientId = env.get("BOT_CLIENT_ID") as string;
+const discordToken = env.get<string>("DISCORD_TOKEN");
+const clientId = env.get<string>("BOT_CLIENT_ID");
 const rest = new REST({ version: "9" }).setToken(discordToken);
 
 (async () => {
