@@ -9,10 +9,9 @@ Simple discord TS bot that has onMessageCreate commands, buttonInteractions comm
 - Faceit API Calls (Elo graph, Elo)
 - Leetifi API Calss (Leetify rating, HLTV 1.0 rating, misc CS2 stats)
 
-
 ### Installation
 ---
--Set up .env file like this
+- Set up .env file like this
 
 ### .env
 
@@ -20,6 +19,11 @@ Simple discord TS bot that has onMessageCreate commands, buttonInteractions comm
 APEX_API_KEY=""
 BOT_CLIENT_ID=""
 DISCORD_TOKEN=""
+DB_USER=""
+DB_NAME=""
+DB_PASSWORD=""
+DB_PORT=0
+DB_HOST=""
 FACEIT_API_KEY=""
 IMGUR_ID=""
 IMGUR_SECRET=""
@@ -30,61 +34,10 @@ STEAM_API_KEY=""
 TRACKER_API_KEY=""
 WELCOME_CHANNEL=""
 ```
-### Final steps (required)
----
-- Comment out everything commented `optional` in bot.ts and substitute your own code
-- A simple example would be:
-- Make a folder called eventCommands in root of project, and a file as "eventCommands.js".
-
-```javascript
-// This is just an example of how you could handle commands
-class Events {
-	static handleEvent = (msg, eventType) => {
-		if((eventType) == "messageCreate")
-			Events.onMessageCreate(event);
-			// etc
-	};
-	// Handling onMessageCreate events
-	static onMessageCreate = (msg) => {
-		// if-else chain for commands
-		if (msg.content === "!<command>") {
-			msg.reply(/*reply to caller*/);
-		} else if (msg.content === "!<command2>") {
-			msg.reply(/*reply to caller*/);
-		}
-		// message content parser
-		else if (msg.content.toLowerCase().includes("<keyword to look through>")) {
-			msg.reply(/*reply to caller*/);
-		}
-	}
-	// Handling ButtonEvents
-	static onInteractionCreateButton = (interaction, client) => {
-	  // example to fetch user
-	  const user = client.users.cache.get(interaction.user.id);
-	  // and DM text
-	  user.send(/*stuff*/);
-	  // or reply to interaction
-	  interaction.reply(/*stuff*/);
-	}
-}
-
-module.exports = Events;
-```
 
 ```bash
 npm install
 ```
-
-### Windows
-
-```batch
-::Delays for 15s to allow wifi to connect
-timeout /T 15
-cls
-cd <path-to-bot>
-npm start
-```
-
 ### Bash (bot.sh)
 
 ```Bash
@@ -92,7 +45,18 @@ npm start
 cd <path-to-bot>
 npm start
 ```
+### Installing PosgresSQL (WSL)
+```
+sudo apt install postgresql postgresql-contrib #installing postgres
+sudo systemctl start postgresql.service 
+sudo -i -u postgres # switching to postgres account
+```
 
+```sql
+CREATE DATABASE db;
+CREATE USER user with encrypted password 'somepassword';
+GRANT ALL PRIVILEGES ON DATABASE db to user;
+```
 ### Running as a service on Linux (change what's inside angled brackets, remove angled brackets)
 ```
 [Unit]

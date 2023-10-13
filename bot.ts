@@ -5,6 +5,7 @@ import { Client, Collection, GatewayIntentBits } from "discord.js";
 import { env } from "./lib/config";
 import { seed } from "./core/seed"; // Optional way to seed events
 import { EventHandler } from "./core/eventHandler";
+import { initializeDb } from "./db/seed";
 
 const client = new Client({
   intents: [
@@ -21,6 +22,7 @@ const commandFiles: string[] = fs
   .filter((file: string) => file.endsWith(".ts"));
 
 (async () => {
+  await initializeDb();
   for (const file of commandFiles) {
     const filePath = path.join(pathToCommands, file);
     const command = await import(filePath);
