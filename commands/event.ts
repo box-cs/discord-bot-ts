@@ -4,6 +4,7 @@ import {
   SlashCommandStringOption,
   SlashCommandBuilder,
 } from "discord.js";
+import { db } from "../db/database";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -32,17 +33,39 @@ module.exports = {
     const keyword = interaction.options.getString("keyword");
     const action = interaction.options.getString("action");
     const description = interaction.options.getString("description");
-    const event = EventHandler.makeEvent(
-      [`!${keyword}`],
-      action,
-      ResponseType.reply,
-      description,
-      Privacy.private,
-      interaction.guildId
-    );
-    EventHandler.addEvent(event);
-
-    await interaction.reply(`Use !${keyword} to call the event`);
+    try {
+      if (action !== "DELETE") {
+        await db.query(
+          `INSERT INTO events (creatorId, action, guildId, description, keywords) VALUES ($1, $2, $3, $4, $5)`,
+          [
+            interaction.user.id,
+            action,
+            interaction.guildId,
+            description,
+            [`!${keyword}`],
+          ]
+        );
+        const event = EventHandler.makeEvent(
+          [`!${keyword}`],
+          action,
+          ResponseType.reply,
+          description,
+          Privacy.public,
+          interaction.guildId
+        );
+        EventHandler.addEvent(event);
+        await interaction.reply(`Use !${keyword} to call the event`);
+      } else {
+        await db.query(
+          `DELETE FROM events WHERE keywords = $1 AND creatorId = $2`,
+          [[`!${keyword}`], interaction.user.id]
+        );
+        await interaction.reply(`!${keyword} event successfully deleted`);
+      }
+    } catch (err) {
+      console.log(err);
+      await interaction.reply(`Something went wrong`);
+    }
   },
 };
 
