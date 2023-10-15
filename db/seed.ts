@@ -3,14 +3,14 @@ import { db } from "./database";
 
 const eventsTableSchema = `
   CREATE TABLE IF NOT EXISTS events (
-    id SERIAL PRIMARY KEY,
-    creatorId VARCHAR(255) NOT NULL,
-    action VARCHAR(255) NOT NULL,
-    guildId VARCHAR(255) NOT NULL,
-    description TEXT,
-    responseType smallint NOT NULL,
-    privacy smallint NOT NULL,
-    keywords TEXT[]
+    "id" SERIAL PRIMARY KEY,
+    "creatorId" VARCHAR(255) NOT NULL,
+    "action" VARCHAR(255) NOT NULL,
+    "guildId" VARCHAR(255) NOT NULL,
+    "description" TEXT,
+    "responseType" smallint NOT NULL,
+    "privacy" smallint NOT NULL,
+    "keywords" TEXT[]
   );
 `;
 
