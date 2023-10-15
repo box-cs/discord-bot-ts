@@ -8,7 +8,8 @@ const eventsTableSchema = `
     action VARCHAR(255) NOT NULL,
     guildId VARCHAR(255) NOT NULL,
     description TEXT,
-    responseType VARCHAR(255) NOT NULL,
+    responseType smallint NOT NULL,
+    privacy smallint NOT NULL,
     keywords TEXT[]
   );
 `;

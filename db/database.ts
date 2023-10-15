@@ -10,7 +10,7 @@ const pool = new Pool({
 });
 
 export const db = {
-  query: async (text: string, params: (string | string[])[] = []) => {
+  query: async (text: string, params: (number | string | string[])[] = []) => {
     return await pool.query({
       text,
       values: params,
