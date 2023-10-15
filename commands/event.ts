@@ -41,13 +41,14 @@ module.exports = {
     try {
       if (action !== "DELETE") {
         await db.query(
-          `INSERT INTO events (creatorId, action, guildId, description, keywords) VALUES ($1, $2, $3, $4, $5)`,
+          `INSERT INTO events (creatorId, action, guildId, description, keywords, responseType) VALUES ($1, $2, $3, $4, $5, $6)`,
           [
             interaction.user.id,
             action,
             interaction.guildId,
             description,
             [`!${keyword}`],
+            ResponseType.send.toString(),
           ]
         );
         const event = EventHandler.makeEvent(
@@ -58,7 +59,7 @@ module.exports = {
           Privacy.private,
           interaction.guildId
         );
-        EventHandler.addEvent(event as BaseEvent);
+        EventHandler.addEvent(event);
         await interaction.reply(`Use !${keyword} to call the event`);
       } else {
         await db.query(
