@@ -34,7 +34,7 @@ export class EventHandler {
     const event = events.find((event) =>
       event.keywords.some((keyword) => messageContent.includes(keyword))
     );
-    if (!event) return;
+    if (!event || !event.isAllowedInGuild(message.guildId)) return;
     switch (event.responseType) {
       case ResponseType.reply:
         message.reply(event.action as string);

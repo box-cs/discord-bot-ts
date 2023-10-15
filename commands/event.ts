@@ -55,7 +55,7 @@ module.exports = {
         const event = EventHandler.makeEvent(
           [`!${keyword}`],
           action,
-          ResponseType.reply,
+          ResponseType.send,
           description,
           Privacy.private,
           interaction.guildId
