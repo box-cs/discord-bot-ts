@@ -1,10 +1,10 @@
 import { Message } from "discord.js";
 
 export enum ResponseType {
+  send,
   reply,
   react,
   action,
-  listener,
 }
 
 export enum Privacy {
@@ -12,8 +12,8 @@ export enum Privacy {
   private,
 }
 
-export type Event = {
-  action: string;
+export type BaseEvent = {
+  action: ((message: Message) => void) | string;
   guildId: string;
   description: string;
   keywords: string[];
@@ -22,59 +22,53 @@ export type Event = {
   isAllowedInGuild: (messageGuildId: string) => boolean;
 };
 
-type ActionEvent = {
-  action: (...args: unknown[]) => void;
-  responseType: ResponseType.action;
-} & Exclude<Event, "action" | "responseType">;
-
-const isActionEvent = (event: Event): event is ActionEvent => {
-  return event.responseType === ResponseType.action;
-};
-
 export class EventHandler {
-  private static events: Event[] = [];
-  static addEvent(event: Event) {
+  private static events: BaseEvent[] = [];
+  static addEvent(event: BaseEvent) {
     EventHandler.events.push(event);
   }
 
   static handleEvent(message: Message) {
-    const keyword = message.content.split(" ")?.[0];
-    const event = EventHandler.events.find((e) =>
-      e.keywords.some((x: string) => x === keyword)
+    const messageContent = message.content;
+    const events = EventHandler.events;
+    const event = events.find((event) =>
+      event.keywords.some((keyword) => messageContent.includes(keyword))
     );
-    if (!event || !event.isAllowedInGuild(message.guildId)) return;
-    if (isActionEvent(event)) {
-      event.action(message, event.keywords);
-    } else {
-      switch (event.responseType) {
-        case ResponseType.reply:
-          message.reply(event.action);
-          break;
-        case ResponseType.react:
-          message.react(event.action);
-          break;
-      }
+    if (!event) return;
+    switch (event.responseType) {
+      case ResponseType.reply:
+        message.reply(event.action as string);
+        break;
+      case ResponseType.send:
+        message.channel.send(event.action as string);
+        break;
+      case ResponseType.react:
+        message.react(event.action as string);
+        break;
+      case ResponseType.action:
+        if (typeof event.action === "function") event?.action?.(message);
+        break;
     }
   }
 
   static makeEvent(
     keywords: string[],
-    action: ((...args: unknown[]) => void) | string,
+    action: ((message: Message) => void) | string,
     responseType: ResponseType,
     description: string = "None",
     privacy = Privacy.private,
     guildId: string = ""
-  ): Event {
+  ) {
     return {
       action,
       description,
       guildId,
+      responseType,
       isAllowedInGuild: (messageGuildId: string) => {
         return privacy === Privacy.public || guildId === messageGuildId;
       },
       keywords,
       privacy,
-      responseType,
-    } as Event;
+    };
   }
 }

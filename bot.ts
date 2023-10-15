@@ -4,7 +4,7 @@ import path from "node:path";
 import { Client, Collection, GatewayIntentBits } from "discord.js";
 import { env } from "./lib/config";
 import { seed } from "./core/seed"; // Optional way to seed events
-import { EventHandler } from "./core/eventHandler";
+import { BaseEvent, EventHandler } from "./core/eventHandler";
 import { initializeDb } from "./db/seed";
 
 const client = new Client({
@@ -36,7 +36,7 @@ const commandFiles: string[] = fs
   }
 })();
 
-seed.map((event) => EventHandler.addEvent(event)); // Optional way to seed events
+seed.map((event) => EventHandler.addEvent(event as BaseEvent)); // Optional way to seed events
 
 client.once("ready", () => {
   console.log(`Ready! Logged in as ${client.user.tag}`);

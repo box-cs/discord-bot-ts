@@ -1,4 +1,9 @@
-import { EventHandler, Privacy, ResponseType } from "../core/eventHandler";
+import {
+  BaseEvent,
+  EventHandler,
+  Privacy,
+  ResponseType,
+} from "../core/eventHandler";
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
@@ -50,10 +55,10 @@ module.exports = {
           action,
           ResponseType.reply,
           description,
-          Privacy.public,
+          Privacy.private,
           interaction.guildId
         );
-        EventHandler.addEvent(event);
+        EventHandler.addEvent(event as BaseEvent);
         await interaction.reply(`Use !${keyword} to call the event`);
       } else {
         await db.query(
