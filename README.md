@@ -7,7 +7,7 @@ Simple discord TS bot that has onMessageCreate commands, buttonInteractions comm
 - Imgur API Calls (subreddit gallery images)
 - Apex API Calls (current map, current item rotation)
 - Faceit API Calls (Elo graph, Elo)
-- Leetifi API Calss (Leetify rating, HLTV 1.0 rating, misc CS2 stats)
+- Leetify API Calss (Leetify rating, HLTV 1.0 rating, misc CS2 stats)
 
 ### Installation
 ---
@@ -62,21 +62,31 @@ GRANT ALL PRIVILEGES ON DATABASE db to user;
 GRANT CREATE ON SCHEMA public TO user; # might need this
 ```
 ### Running as a service on Linux (change what's inside angled brackets, remove angled brackets)
+
+```bash
+sudo touch /etc/systemd/system/discordbot.service
 ```
+
+```
+# in the discordbot.service file 
 [Unit]
-Description=<yourbotname> discord bot
+Description=Discord Bot
 
 [Service]
-# delay service start until PC is connected to wifi/ethernet
-# alternatively, use network-online.target
-# ExecStartPre=/bin/sleep 15
-User=<yourusername>
-WorkingDirectory=<path/to/code>
-Type=forking
-ExecStart=<path/to/code>/bot.sh
+User=root
+WorkingDirectory=/some/path/to/discord-bot-ts
+ExecStart=/some/path/to/discord-bot-ts/bot.sh
 Restart=always
 RestartSec=15
+TimeoutStartSec=30
 
 [Install]
 WantedBy=default.target
+```
+
+```bash
+systemctl enable discordbot.service
+systemctl start discordbot.service
+# monitoring
+watch -c SYSTEMD_COLORS=1 systemctl status discordbot.service
 ```
