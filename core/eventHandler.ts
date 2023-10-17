@@ -33,7 +33,7 @@ export class EventHandler {
     const events = EventHandler.events;
     const event = events.find((event) =>
       event.keywords.some((keyword) =>
-        messageContent.split(" ")[0].includes(keyword)
+        keyword.match(messageContent?.split(" ")?.[0])
       )
     );
     const isAllowedInGuild =
