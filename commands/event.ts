@@ -1,5 +1,4 @@
 import {
-  BaseEvent,
   EventHandler,
   Privacy,
   ResponseType,
