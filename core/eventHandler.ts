@@ -19,7 +19,6 @@ export type BaseEvent = {
   keywords: string[];
   privacy: Privacy;
   responseType: ResponseType;
-  isAllowedInGuild: (messageGuildId: string) => boolean;
 };
 
 export class EventHandler {
@@ -31,14 +30,16 @@ export class EventHandler {
   static handleEvent(message: Message) {
     const messageContent = message.content;
     const events = EventHandler.events;
-    const event = events.find((event) =>
-      event.keywords.some(
-        (keyword) => keyword === messageContent?.split(" ")?.[0]
+    const event = events
+      .filter(
+        (x) => x.guildId === message.guildId || x.privacy === Privacy.public
       )
-    );
-    const isAllowedInGuild =
-      event?.privacy === Privacy.public || event?.guildId === message.guildId;
-    if (!event || !isAllowedInGuild) return;
+      .find((event) =>
+        event.keywords.some(
+          (keyword) => keyword === messageContent?.split(" ")?.[0]
+        )
+      );
+    if (!event) return;
     switch (event.responseType) {
       case ResponseType.reply:
         message.reply(event.action as string);
@@ -68,9 +69,6 @@ export class EventHandler {
       description,
       guildId,
       responseType,
-      isAllowedInGuild: (messageGuildId: string) => {
-        return privacy === Privacy.public || guildId === messageGuildId;
-      },
       keywords,
       privacy,
     };

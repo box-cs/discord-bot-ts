@@ -1,8 +1,4 @@
-import {
-  EventHandler,
-  Privacy,
-  ResponseType,
-} from "../core/eventHandler";
+import { EventHandler, Privacy, ResponseType } from "../core/eventHandler";
 import {
   ChatInputCommandInteraction,
   SlashCommandStringOption,
