@@ -18,5 +18,4 @@ jobs:
       - name: lint
         run: ./node_modules/.bin/eslint .
       - name: test
-
         run: ./node_modules/.bin/jest
