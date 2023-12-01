@@ -21,11 +21,11 @@ module.exports = {
     await interaction.deferReply();
     const username = interaction.options.getString("username");
     try {
-      const data = (await searchPlayer(username))?.data;
+      const data = await searchPlayer(username);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore type this better
       const player = extractPlayerData(data);
-      const playerStats = (await searchPlayerStats(username))?.data;
+      const playerStats = await searchPlayerStats(username);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore type this better
       const messageEmbed = makeEloEmbed(player, playerStats);
