@@ -26,11 +26,11 @@ module.exports = {
     const url = interaction.options.getString("url");
     try {
       const steamId = await resolveSteamID(url);
-      const data = (await searchPlayerFromSteamID(steamId))?.data;
+      const data = await searchPlayerFromSteamID(steamId);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore type this better
       const player = extractPlayerData(data);
-      const playerStats = (await searchPlayerStats(player.name))?.data;
+      const playerStats = await searchPlayerStats(player.name);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore type this better
       const messageEmbed = makeEloEmbed(player, playerStats);

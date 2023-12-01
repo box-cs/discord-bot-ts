@@ -2,6 +2,8 @@ name: CI
 on: push
 jobs:
   build:
+    env:
+      FACEIT_API_KEY: ${{ secrets.FACEIT_API_KEY }}
     defaults:
       run:
         working-directory: /home/runner/work/discord-bot-ts/discord-bot-ts
@@ -15,3 +17,6 @@ jobs:
         run: npm i
       - name: lint
         run: ./node_modules/.bin/eslint .
+      - name: test
+
+        run: ./node_modules/.bin/jest

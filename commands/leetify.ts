@@ -142,7 +142,7 @@ module.exports = {
       const isSteamUrl = input.includes("steamcommunity.com");
       const id64 = isSteamUrl
         ? await resolveSteamID(input)
-        : (await searchPlayer(input)).data.steam_id_64;
+        : (await searchPlayer(input)).steam_id_64;
 
       const leetifyStats = await getLeetifyUserLifetimeStats(
         id64,

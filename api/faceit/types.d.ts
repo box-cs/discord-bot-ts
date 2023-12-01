@@ -1,21 +1,17 @@
-export type FaceitPlayer = {
+export type FaceitPlayerData = {
   activated_at: Date;
   avatar: string;
   country: string;
   cover_featured_image: string;
   cover_image: string;
-  data?: {
-    player_id: string;
-    steam_id_64?: string;
-  };
+  nickname?: string;
   faceit_url: string;
   friends_ids: string[];
-  games: Games;
+  games: { [key: string]: Game };
   infractions: string;
   membership_type: string;
   memberships: string[];
   new_steam_id: string;
-  nickname: string;
   platforms: Platforms;
   player_id: string;
   settings: Settings;
@@ -24,19 +20,13 @@ export type FaceitPlayer = {
   verified: boolean;
 };
 
-export type Games = {
-  additionalProp1: AdditionalProp;
-  additionalProp2: AdditionalProp;
-  additionalProp3: AdditionalProp;
-};
-
-export type AdditionalProp = {
+export type Game = {
   faceit_elo: number;
   game_player_id: string;
   game_player_name: string;
   game_profile_id: string;
   region: string;
-  regions: string;
+  regions: unknown;
   skill_level: number;
   skill_level_label: string;
 };
