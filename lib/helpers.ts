@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "discord.js";
-import { ApexAPIData, Player } from "./interfaces";
 import { FaceitPlayerStats } from "api/faceit/types";
+import { ApexAPIData } from "./types";
 
 export const map_images: { [key: string]: string } = {
   "World's Edge":

@@ -1,8 +1,3 @@
-export type Player = {
-  nickname: string;
-  avatar: string;
-};
-
 export type MapData = {
   current: {
     map: string;
