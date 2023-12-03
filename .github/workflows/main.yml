@@ -32,10 +32,11 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
           key: ${{ secrets.KEY }}
           script: |
             cd source/discord-bot-ts
             git pull
             rm -rf node_modules
             npm i
-            systemctl restart $BOT_NAME
+            systemctl restart "$BOT_NAME"
