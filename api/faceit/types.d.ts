@@ -7,7 +7,7 @@ export type FaceitPlayerData = {
   nickname?: string;
   faceit_url: string;
   friends_ids: string[];
-  games: { [key: string]: Game };
+  games: Games;
   infractions: string;
   membership_type: string;
   memberships: string[];
@@ -20,6 +20,7 @@ export type FaceitPlayerData = {
   verified: boolean;
 };
 
+export type Games = { [key: string]: Game };
 export type Game = {
   faceit_elo: number;
   game_player_id: string;
