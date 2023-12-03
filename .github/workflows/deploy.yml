@@ -21,6 +21,7 @@ jobs:
           key: ${{ secrets.KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
+            echo $(pwd)
             eval `ssh-agent -s`
             ssh-add ~/.ssh/id_rsa_github
             git checkout main
