@@ -37,7 +37,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd source/discord-bot-ts
-            git pull
-            rm -rf node_modules
-            npm i
+            git pull &&
+            rm -rf node_modules &&
+            npm i &&
             systemctl restart "$BOT_NAME"
