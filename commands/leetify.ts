@@ -74,7 +74,7 @@ const makeLeetifyEmbed = (
         value: `<t:${timeStamp.slice(
           0,
           timeStamp.length - 3
-        )}:R> "[${dataSources.join("& ")}]`,
+        )}:R> \`[${dataSources.join(" & ")}]\``,
       }
     );
 };
