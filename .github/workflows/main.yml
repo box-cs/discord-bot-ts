@@ -32,7 +32,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.KEY }}
           script: |
             cd source/discord-bot-ts
             git pull
