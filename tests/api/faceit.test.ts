@@ -18,10 +18,10 @@ const TEST_USER: Pick<
 
 const searchPlayerAssertions = (player: FaceitPlayerData) => {
   expect(player.nickname).toBe(TEST_USER.nickname);
-  expect(player.games.csgo.faceit_elo).toEqual(expect.any(Number));
-  expect(player.games.csgo.skill_level).toEqual(expect.any(Number));
-  expect(player.games.csgo.game_profile_id).toBeDefined();
-  expect(player.games.csgo.skill_level_label).toBeDefined();
+  expect(player.games.cs2.faceit_elo).toEqual(expect.any(Number));
+  expect(player.games.cs2.skill_level).toEqual(expect.any(Number));
+  expect(player.games.cs2.game_profile_id).toBeDefined();
+  expect(player.games.cs2.skill_level_label).toBeDefined();
 };
 
 test("faceit-api - searchPlayer", async () => {

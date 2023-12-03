@@ -17,11 +17,13 @@ import { emojifyADR } from "../lib/helpers";
 const makeLeetifyEmbed = (
   leetifyLifetimeStats: LeetifyLifetimeStats & {
     id64: string;
+    dataSources: string[];
   }
 ) => {
   const {
     adr,
     kpr,
+    dataSources,
     leetifyRating,
     hltvRating,
     kd,
@@ -69,7 +71,10 @@ const makeLeetifyEmbed = (
       },
       {
         name: " ",
-        value: `<t:${timeStamp.slice(0, timeStamp.length - 3)}:R>`,
+        value: `<t:${timeStamp.slice(
+          0,
+          timeStamp.length - 3
+        )}:R> "[${dataSources.join("& ")}]`,
       }
     );
 };
@@ -150,7 +155,7 @@ module.exports = {
         gameVersions
       );
       await interaction.editReply({
-        embeds: [makeLeetifyEmbed({ ...leetifyStats, id64 })],
+        embeds: [makeLeetifyEmbed({ ...leetifyStats, id64, dataSources })],
       });
     } catch (err) {
       await interaction.editReply("No leetify account found.");

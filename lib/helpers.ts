@@ -1,5 +1,6 @@
 import { EmbedBuilder } from "discord.js";
 import { ApexAPIData, Player } from "./interfaces";
+import { FaceitPlayerData } from "api/faceit/types";
 
 export const map_images: { [key: string]: string } = {
   "World's Edge":
@@ -47,22 +48,13 @@ export function emojifyADR(adr: number): string {
   }
 }
 
-export function extractPlayerData(
-  data: Player & {
-    games: {
-      csgo: {
-        skill_level: number;
-        faceit_elo: number;
-      };
-    };
-  }
-) {
+export function extractPlayerData(data: FaceitPlayerData) {
   return {
     name: data?.nickname,
     avatar: data?.avatar,
-    csgo: {
-      level: data?.games.csgo.skill_level.toString(),
-      elo: data?.games.csgo.faceit_elo.toString(),
+    cs2: {
+      level: data?.games.cs2.skill_level.toString(),
+      elo: data?.games.cs2.faceit_elo.toString(),
     },
   };
 }
@@ -70,7 +62,7 @@ export function extractPlayerData(
 export function makeEloEmbed(
   player: Player & {
     name: string;
-    csgo: {
+    cs2: {
       elo: string;
       level: string;
     };
@@ -87,7 +79,7 @@ export function makeEloEmbed(
     .map((result: number) => (result == 1 ? "W" : "L"))
     .join(" ");
 
-  const eloImage = `https://beta.leetify.com/assets/images/rank-icons/faceit${player.csgo.level}.png`;
+  const eloImage = `https://beta.leetify.com/assets/images/rank-icons/faceit${player.cs2.level}.png`;
   const timeStamp = Date.now().toString();
   const messageEmbed = new EmbedBuilder()
     .setColor("#ff5500")
@@ -97,7 +89,7 @@ export function makeEloEmbed(
       url: `https://www.faceit.com/en/players/${player.name}`,
     })
     .addFields(
-      { name: "Elo", value: player?.csgo?.elo, inline: false },
+      { name: "Elo", value: player?.cs2?.elo, inline: false },
       { name: "Recent Results", value: recentResults, inline: false },
       {
         name: " ",
