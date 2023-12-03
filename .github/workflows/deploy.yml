@@ -1,0 +1,31 @@
+name: Deploy
+on:
+  workflow_run:
+    workflows: ["Test"]
+  push:
+    branches: [main]
+jobs:
+  pull:
+    env:
+      BOT_NAME: ${{ secrets.BOT_NAME }}
+    defaults:
+      run:
+        working-directory: /home/runner/work/discord-bot-ts/discord-bot-ts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            eval `ssh-agent -s`
+            ssh-add ~/.ssh/id_rsa_github
+            git checkout main
+            cd source/discord-bot-ts
+            git pull &&
+            rm -rf node_modules &&
+            npm i &&
+            systemctl restart "$BOT_NAME"
