@@ -19,3 +19,29 @@ jobs:
         run: ./node_modules/.bin/eslint .
       - name: test
         run: ./node_modules/.bin/jest
+  pull:
+    if: github.event.pull_request.merged
+    env:
+      BOT_NAME: ${{ secrets.BOT_NAME }}
+    defaults:
+      run:
+        working-directory: /home/runner/work/discord-bot-ts/discord-bot-ts
+    runs-on: ubuntu-latest
+    steps:
+      - name: pulling latest changes
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            eval `ssh-agent -s`
+            ssh-add ~/.ssh/id_rsa_github
+            git checkout main
+            cd source/discord-bot-ts
+            git pull &&
+            rm -rf node_modules &&
+            npm i &&
+            systemctl restart "$BOT_NAME"
