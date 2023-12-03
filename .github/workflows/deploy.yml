@@ -1,7 +1,5 @@
 name: Deploy
 on:
-  workflow_run:
-    workflows: ["Test"]
   push:
     branches: [main]
 jobs:
