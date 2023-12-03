@@ -1,4 +1,4 @@
-import { getLeetifyProfileData } from "api/leetify/leetify-api";
+import { getLeetifyProfileData } from "..api/leetify/leetify-api";
 import { searchPlayerStats, searchPlayer } from "../api/faceit/faceit-api";
 import { makeEloEmbed } from "../lib/helpers";
 import {
