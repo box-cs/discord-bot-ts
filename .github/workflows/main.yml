@@ -38,6 +38,7 @@ jobs:
           script: |
             eval `ssh-agent -s`
             ssh-add ~/.ssh/id_rsa_github
+            git checkout main
             cd source/discord-bot-ts
             git pull &&
             rm -rf node_modules &&
