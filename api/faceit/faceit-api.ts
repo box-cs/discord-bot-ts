@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FaceitPlayerData } from "./types";
+import { FaceitPlayerData, FaceitPlayerStats } from "./types";
 import { env } from "../../lib/config";
 
 const FACEIT_API_KEY = env.get("FACEIT_API_KEY");
@@ -25,7 +25,9 @@ export const searchPlayerFromSteamID = async (
   return (await axios.get(query, options)).data;
 };
 
-export const searchPlayerStats = async (username: string) => {
+export const searchPlayerStats = async (
+  username: string
+): Promise<FaceitPlayerStats> => {
   const player_id = (await searchPlayer(username))?.player_id;
   const query = `https://open.faceit.com/data/v4/players/${player_id}/stats/cs2`;
   return (await axios.get(query, options)).data;

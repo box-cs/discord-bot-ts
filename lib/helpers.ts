@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "discord.js";
-import { ApexAPIData, Player } from "./interfaces";
-import { FaceitPlayerData } from "api/faceit/types";
+import { FaceitPlayerStats } from "api/faceit/types";
+import { ApexAPIData } from "./types";
 
 export const map_images: { [key: string]: string } = {
   "World's Edge":
@@ -48,35 +48,21 @@ export function emojifyADR(adr: number): string {
   }
 }
 
-export function extractPlayerData(data: FaceitPlayerData) {
-  return {
-    name: data?.nickname,
-    avatar: data?.avatar,
-    cs2: {
-      level: data?.games.cs2.skill_level.toString(),
-      elo: data?.games.cs2.faceit_elo.toString(),
-    },
-  };
-}
-
 export function makeEloEmbed(
-  player: Player & {
+  player: {
+    avatar: string;
     name: string;
     cs2: {
       elo: string;
       level: string;
+      skillLevel: string;
     };
   },
-  playerStats: {
-    lifetime: {
-      "Average K/D Ratio": number;
-      "Recent Results": number[];
-    };
-  }
+  playerStats: FaceitPlayerStats
 ) {
   const kd = playerStats?.lifetime["Average K/D Ratio"];
   const recentResults = playerStats?.lifetime["Recent Results"]
-    .map((result: number) => (result == 1 ? "W" : "L"))
+    .map((result: string) => (result === "1" ? "W" : "L"))
     .join(" ");
 
   const eloImage = `https://beta.leetify.com/assets/images/rank-icons/faceit${player.cs2.level}.png`;
@@ -84,12 +70,13 @@ export function makeEloEmbed(
   const messageEmbed = new EmbedBuilder()
     .setColor("#ff5500")
     .setAuthor({
-      name: `${player.name} ${emojifyKD(kd)}`,
+      name: `${player.name} ${emojifyKD(Number(kd))}`,
       iconURL: eloImage,
       url: `https://www.faceit.com/en/players/${player.name}`,
     })
     .addFields(
       { name: "Elo", value: player?.cs2?.elo, inline: false },
+      { name: "Rating", value: player?.cs2?.skillLevel, inline: false },
       { name: "Recent Results", value: recentResults, inline: false },
       {
         name: " ",

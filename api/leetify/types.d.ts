@@ -83,3 +83,111 @@ export type MultiKill = {
   perRoundRatio: number;
   total: number;
 };
+
+export type LeetifyProfileData = {
+  highlights?: Highlights[] | null;
+  personalBests?: PersonalBests[] | null;
+  recentGameRatings: RecentGameRatings;
+  teammates?: TeammatesEntity[] | null;
+  games?: GamesEntity[] | null;
+  meta: Meta;
+};
+
+export type Highlights = {
+  createdAt: string;
+  description: string;
+  gameId: string;
+  id: string;
+  isPinned: boolean;
+  pendingPro: boolean;
+  rankValue?: null;
+  roundNumber: number;
+  steam64Id: string;
+  thumbnailUrl: string;
+  url: string;
+  username: string;
+};
+
+export type PersonalBests = {
+  gameId: string;
+  skillId: string;
+  value: string;
+};
+
+export type RecentGameRatings = {
+  aim: number;
+  positioning: number;
+  utility: number;
+  gamesPlayed: number;
+  clutch: number;
+  ctLeetify: number;
+  leetify: number;
+  opening: number;
+  tLeetify: number;
+};
+
+export type TeammatesEntity = {
+  isCollector: boolean;
+  isProPlan: boolean;
+  leetifyUserId?: string | null;
+  club?: Club | null;
+  isBanned: boolean;
+  isLeetifyStaff: boolean;
+  matchesPlayedTogether: number;
+  profileUserLeetifyRating: number;
+  rank?: Rank | null;
+  steam64Id: string;
+  steamAvatarUrl?: string | null;
+  steamNickname: string;
+  teammateLeetifyRating: number;
+  winRateTogether: number;
+};
+
+export type Club = {
+  name: string;
+  tag: string;
+};
+
+export type Rank = {
+  type?: string | null;
+  dataSource: string;
+  skillLevel: number;
+};
+
+export type GamesEntity = {
+  enemyTeamSteam64Ids?: (string | null)[] | null;
+  isCompletedLongMatch: boolean;
+  ownTeamSteam64Ids?: string[] | null;
+  ownTeamTotalLeetifyRatingRounds: { [key: number]: number | null };
+  ownTeamTotalLeetifyRatings: { [key: number]: number | null };
+  ctLeetifyRating?: number | null;
+  ctLeetifyRatingRounds?: number | null;
+  dataSource: string;
+  elo?: null;
+  gameFinishedAt: string;
+  gameId: string;
+  isCs2: boolean;
+  mapName: string;
+  matchResult: string;
+  rankType?: number | null;
+  scores?: number[] | null;
+  skillLevel?: number | null;
+  tLeetifyRating?: number | null;
+  tLeetifyRatingRounds?: number | null;
+  deaths?: number | null;
+  hasBannedPlayer?: boolean | null;
+  kills?: number | null;
+  partySize?: number | null;
+};
+
+export type Meta = {
+  name: string;
+  steam64Id: string;
+  steamAvatarUrl: string;
+  isCollector: boolean;
+  isLeetifyStaff: boolean;
+  isProPlan: boolean;
+  leetifyUserId: string;
+  faceitNickname: string;
+  platformBans?: null[] | null;
+};
