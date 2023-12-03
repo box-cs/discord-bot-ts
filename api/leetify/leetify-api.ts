@@ -4,6 +4,7 @@ import {
   GameVersion,
   GeneralData,
   LeetifyLifetimeStats,
+  LeetifyProfileData,
   LeetifyUser,
 } from "./types";
 
@@ -22,6 +23,15 @@ const getLeetifyUser = async (steam64Id: string): Promise<LeetifyUser> => {
   });
   const data = (await res.json()) as LeetifyUser[];
   return data?.[0];
+};
+
+export const getLeetifyProfileData = async (
+  steam64Id: string
+): Promise<LeetifyProfileData> => {
+  const res = await fetch(`https://api.leetify.com/api/profile/${steam64Id}`, {
+    headers,
+  });
+  return res.json();
 };
 
 const getGeneralStats = async (
