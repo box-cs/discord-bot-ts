@@ -20,4 +20,4 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd source/discord-bot-ts
-            ./.deploy.sh
+            ./.deploy.sh &
