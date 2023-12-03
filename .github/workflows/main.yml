@@ -19,3 +19,23 @@ jobs:
         run: ./node_modules/.bin/eslint .
       - name: test
         run: ./node_modules/.bin/jest
+  pull:
+    env:
+      BOT_NAME: ${{ secrets.BOT_NAME }}
+    defaults:
+      run:
+        working-directory: /home/runner/work/discord-bot-ts/discord-bot-ts
+    runs-on: ubuntu-latest
+    steps:
+      - name: pulling latest changes
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key_path: ${{ secrets.KEY_PATH }}
+          script: |
+            cd source/discord-bot-ts
+            git pull
+            rm -rf node_modules
+            npm i
+            systemctl restart $BOT_NAME
