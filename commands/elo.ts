@@ -35,7 +35,7 @@ module.exports = {
           cs2: {
             skillLevel,
             elo: data.games?.cs2?.faceit_elo.toString(),
-            level: data.games?.cs2?.skill_level_label.toString(),
+            level: data.games?.cs2?.skill_level.toString(),
           },
         },
         playerStats
