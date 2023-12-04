@@ -8,7 +8,8 @@ import {
   searchPlayerStats,
 } from "../api/faceit/faceit-api";
 import { resolveSteamID } from "../api/steam/steam-api";
-import { extractPlayerData, makeEloEmbed } from "../lib/helpers";
+import { makeEloEmbed } from "../lib/helpers";
+import { getLeetifyProfileData } from "api/leetify/leetify-api";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -27,13 +28,23 @@ module.exports = {
     try {
       const steamId = await resolveSteamID(url);
       const data = await searchPlayerFromSteamID(steamId);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore type this better
-      const player = extractPlayerData(data);
-      const playerStats = await searchPlayerStats(player.name);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore type this better
-      const messageEmbed = makeEloEmbed(player, playerStats);
+      const skillLevel = (
+        await getLeetifyProfileData(data.steam_id_64)
+      ).games?.[0].skillLevel.toString();
+
+      const playerStats = await searchPlayerStats(data.nickname);
+      const messageEmbed = makeEloEmbed(
+        {
+          name: data.nickname,
+          avatar: data.avatar,
+          cs2: {
+            skillLevel,
+            elo: data.games?.csgo?.faceit_elo.toString(),
+            level: data.games?.csgo?.skill_level_label,
+          },
+        },
+        playerStats
+      );
       await interaction.editReply({ embeds: [messageEmbed] });
     } catch {
       await interaction.editReply("No FACEIT account found.");
