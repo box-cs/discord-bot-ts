@@ -9,7 +9,7 @@ import {
 } from "../api/faceit/faceit-api";
 import { resolveSteamID } from "../api/steam/steam-api";
 import { makeEloEmbed } from "../lib/helpers";
-import { getLeetifyProfileData } from "api/leetify/leetify-api";
+import { getLeetifyProfileData } from "../api/leetify/leetify-api";
 
 module.exports = {
   data: new SlashCommandBuilder()
