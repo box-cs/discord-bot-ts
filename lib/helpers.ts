@@ -76,7 +76,14 @@ export function makeEloEmbed(
     })
     .addFields(
       { name: "Elo", value: player?.cs2?.elo, inline: false },
-      { name: "Rating", value: player?.cs2?.skillLevel, inline: false },
+      {
+        name: "Rating",
+        value:
+          player?.cs2?.skillLevel === "0"
+            ? "Inactive"
+            : player?.cs2?.skillLevel,
+        inline: false,
+      },
       { name: "Recent Results", value: recentResults, inline: false },
       {
         name: " ",
