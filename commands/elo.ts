@@ -34,8 +34,8 @@ module.exports = {
           avatar: data.avatar,
           cs2: {
             skillLevel,
-            elo: data.games?.csgo?.faceit_elo.toString(),
-            level: data.games?.csgo?.skill_level_label,
+            elo: data.games?.cs2?.faceit_elo.toString(),
+            level: data.games?.cs2?.skill_level_label.toString(),
           },
         },
         playerStats
